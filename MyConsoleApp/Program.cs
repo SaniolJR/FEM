@@ -33,5 +33,13 @@ static class Program
 
             Console.WriteLine("\n");
         }
+
+        //funkcja 𝑓 𝑥 = 5𝑥2 + 3𝑥 + 6
+        double f1(double x) => 5.0 * x * x + 3.0 * x + 6;
+        //funkcja 𝑓 𝑥, 𝑦 = 5𝑥2𝑦2 + 3𝑥𝑦 + 6
+        double f2(double x, double y) => 5.0 * x * x * y * y + 3.0 * x * y + 6;
+
+        double wynik = schemat.kalkulacja1D(f1);
+        Console.WriteLine("Wynik dla 𝑓 𝑥 = 5𝑥2 + 3𝑥 + 6\t\t" + wynik);
     }
 }

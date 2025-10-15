@@ -35,8 +35,8 @@ namespace Gauss__schamet_calk
                 throw new InvalidOperationException("[schemat_calk]: wspolczynniki zle zainicjalizowane");
 
 
-            this.wezly2D = new List<List<(double, double)>>();
-            this.wspolczynniki2D = new List<List<(double, double)>>();
+            this.wezly2D = new List<List<(double x, double y)>>();
+            this.wspolczynniki2D = new List<List<(double x, double y)>>();
 
             //robiona tak aby łatwo było sie odnalezc powtorzonym   for(int i = 0; i <n; i++)
             for (int j = N - 1; j >= 0; j--)
@@ -55,6 +55,28 @@ namespace Gauss__schamet_calk
             }
         }
 
+        public double kalkulacja1D(Func<double, double> f)
+        {
+            double res = 0;
+            for (int i = 0; i < N; i++)
+            {
+                res += f(wezly[i]) * wspolczynniki[i];
+            }
+            return res;
+        }
+
+        public double kalkulacja2D(Func<double, double, double> f)
+        {
+            double res = 0;
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    res += f(wezly2D[i][j].Item1, wezly2D[i][j].Item2) * wspolczynniki2D[i][j].Item1 * wspolczynniki2D[i][j].Item2;
+                }
+            }
+            return res;
+        }
     }
 
     public class schemat_calk_1pkt : schemat_calk
