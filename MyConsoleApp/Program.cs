@@ -5,9 +5,9 @@ static class Program
 {
     static void Main(string[] args)
     {
-        var globalData = new GlobalData(@"C:\Users\mateu\Desktop\mes\Test1_4_4.txt");
+        var globalData = new GlobalData("C:\\Users\\mateu\\Desktop\\mes\\Test3_31_31_kwadrat.txt");
         var grid = new Grid(globalData.nN, globalData.nE, globalData.nodesCoord, globalData.elementNodes);
         grid.displayData();
-        Console.WriteLine("\n\n\n\n" + globalData.SimulationStepTime);
+        Console.WriteLine("\n\n SimulationStepTime: " + globalData.SimulationStepTime + "\n");
     }
 }

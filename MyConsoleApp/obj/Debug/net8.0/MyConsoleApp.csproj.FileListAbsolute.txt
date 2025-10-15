@@ -12,3 +12,4 @@ C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\refint\MyConsoleApp.dll
 C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.pdb
 C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.genruntimeconfig.cache
 C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\ref\MyConsoleApp.dll
+C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.sourcelink.json

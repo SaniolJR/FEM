@@ -56,7 +56,7 @@ namespace GridAndDetailsNamespace
             Console.WriteLine("Elementy");
             for (int i = 0; i < nE; i++)
             {
-                Console.Write($"{i} wierzcholki: ");
+                Console.WriteLine($"{i} wierzcholki: ");
                 foreach (var n in elements[i].nodes)
                     Console.Write(n + " ");
             }
