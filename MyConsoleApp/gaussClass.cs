@@ -79,9 +79,9 @@ namespace Gauss__schamet_calk
         }
     }
 
-    public class schemat_calk_1pkt : schemat_calk
+    public class schemat_calk_2pkt : schemat_calk
     {
-        public schemat_calk_1pkt()
+        public schemat_calk_2pkt()
         {
             this.wezly = new List<double> { -1.0 / Math.Sqrt(3), 1.0 / Math.Sqrt(3) };
             this.wspolczynniki = new List<double> { 1.0, 1.0 };
@@ -91,9 +91,9 @@ namespace Gauss__schamet_calk
     }
 
 
-    public class schemat_calk_2pkt : schemat_calk
+    public class schemat_calk_3pkt : schemat_calk
     {
-        public schemat_calk_2pkt()
+        public schemat_calk_3pkt()
         {
             this.wezly = new List<double> { -1 * Math.Sqrt(3.0 / 5.0), 0.0, Math.Sqrt(3.0 / 5.0) };
             this.wspolczynniki = new List<double> { 5.0 / 9.0, 8.0 / 9.0, 5.0 / 9.0 };
@@ -102,9 +102,9 @@ namespace Gauss__schamet_calk
         }
     }
 
-    public class schemat_calk_3pkt : schemat_calk
+    public class schemat_calk_4pkt : schemat_calk
     {
-        public schemat_calk_3pkt()
+        public schemat_calk_4pkt()
         {
             this.wezly = new List<double> { -0.861136, -0.339981, 0.339981, 0.861136 };
             this.wspolczynniki = new List<double> { 0.347855, 0.652145, 0.652145, 0.347855 };

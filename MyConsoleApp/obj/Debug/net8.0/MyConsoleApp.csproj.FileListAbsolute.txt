@@ -13,3 +13,18 @@ C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.pdb
 C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.genruntimeconfig.cache
 C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\ref\MyConsoleApp.dll
 C:\Users\mateu\Desktop\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.sourcelink.json
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\bin\Debug\net8.0\MyConsoleApp.exe
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\bin\Debug\net8.0\MyConsoleApp.deps.json
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\bin\Debug\net8.0\MyConsoleApp.runtimeconfig.json
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\bin\Debug\net8.0\MyConsoleApp.dll
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\bin\Debug\net8.0\MyConsoleApp.pdb
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.AssemblyInfoInputs.cache
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.AssemblyInfo.cs
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.sourcelink.json
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.dll
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\refint\MyConsoleApp.dll
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.pdb
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\MyConsoleApp.genruntimeconfig.cache
+C:\Users\mateu\Desktop\studia\SEMESTR 5\mes\MyConsoleApp\obj\Debug\net8.0\ref\MyConsoleApp.dll

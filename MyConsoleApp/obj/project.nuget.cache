@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iw82LfYTbsQ=",
+  "dgSpecHash": "QwUK3gS4i4Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\mateu\\Desktop\\mes\\MyConsoleApp\\MyConsoleApp.csproj",
+  "projectFilePath": "C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mateu\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.16\\microsoft.netcore.app.ref.8.0.16.nupkg.sha512",
     "C:\\Users\\mateu\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.16\\microsoft.windowsdesktop.app.ref.8.0.16.nupkg.sha512",
