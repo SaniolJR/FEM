@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using Gauss__schamet_calk;
+using jakobianClass;
+
 namespace GridAndDetailsNamespace
 {
     class Node
@@ -13,10 +18,31 @@ namespace GridAndDetailsNamespace
 
     class Element
     {
-        public int[] nodes { get; }     //pole publiczne ale tylko do odczytu (metoda get to umożliwia)
-        public Element(int[] nodesList)
+        public Node[] nodes { get; }     //pole publiczne ale tylko do odczytu (metoda get to umożliwia)
+        public List<Jakobian> jakobianList { get; }  //KAŻDY ELEMENT ZE SCHEMATU CAŁKOWANIA POWINIEN MIEĆ SWÓJ JAKOBIAN!
+
+        //przypisywanie tych nodes z globalnych + przekazujemy juz wczeniej odpowiednie listy dla tego elementu!
+        public Element(Node[] allNodes, int[] nodesList, schemat_calk gauss)
         {
-            this.nodes = nodesList;
+
+            this.nodes = new Node[nodesList.Length];
+
+            for (int idx = 0; idx < nodesList.Length; idx++)
+            {
+                int nodeIndex = nodesList[idx];
+                this.nodes[idx] = allNodes[nodeIndex];
+            }
+            var elemUni = new ElemUniv(gauss);
+            var dN_de = elemUni.dN_de;
+            var dN_dn = elemUni.dN_dn;
+
+            this.jakobianList = new List<Jakobian>();
+
+            for (int i = 0; i < dN_de.Count; i++)
+            {
+                jakobianList.Add(new Jakobian(nodes, dN_de[i], dN_dn[i]));
+            }
+
         }
 
     }
@@ -42,7 +68,7 @@ namespace GridAndDetailsNamespace
 
             //inicjalizacja elementów - przesyłamy liste nodes dla każdego elementu
             for (int i = 0; i < nE; i++)
-                elements[i] = new Element(elementsWithNodes[i].ToArray());
+                elements[i] = new Element(this.nodes, elementsWithNodes[i].ToArray());
         }
 
         public void displayData()
