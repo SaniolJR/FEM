@@ -24,21 +24,18 @@ namespace GridAndDetailsNamespace
         //przypisywanie tych nodes z globalnych + przekazujemy juz wczeniej odpowiednie listy dla tego elementu!
         public Element(Node[] allNodes, int[] nodesList, schemat_calk gauss)
         {
+            if (nodesList == null || nodesList.Length == 0)
+                throw new ArgumentException("ELEMENT CLASS - nodesList is null or empty", nameof(nodesList));
+            if (allNodes == null || allNodes.Length == 0)
+                throw new ArgumentException("ELEMENT CLASS - allNodes is null or empty", nameof(allNodes));
 
-            if (nodesList.Length <= 0 || nodesList == null)
-            {
-                throw new Exception("ELEMENT CALSS - nodeList.length <= 0");
-            }
-
+            // Do NOT perform automatic 1-based->0-based conversion. Require 0-based indices.
             this.nodes = new Node[nodesList.Length];
-
             for (int idx = 0; idx < nodesList.Length; idx++)
             {
                 int nodeIndex = nodesList[idx];
-                if (nodeIndex >= nodes.Length)
-                {
-                    throw new Exception("nodeIndex >= nodes.Length");
-                }
+                if (nodeIndex < 0 || nodeIndex >= allNodes.Length)
+                    throw new IndexOutOfRangeException($"Element constructor: node index {nodeIndex} is out of range (0..{allNodes.Length - 1}). Input indices must be 0-based.");
                 this.nodes[idx] = allNodes[nodeIndex];
             }
             var elemUni = new ElemUniv(gauss);
@@ -80,13 +77,57 @@ namespace GridAndDetailsNamespace
             {
                 throw new Exception("GRID CALSS - nN || nE <= 0");
             }
-            //inicjalizacja nodes z listy (lista nie tupla aby zapewnić wiekszą elastyczność)
-            for (int i = 0; i < nN; i++)
-                nodes[i] = new Node(nodesList[i][0], nodesList[i][1]);      //w razie większej ilości koordów zmienic!!!
+            if (nodesList == null)
+                throw new ArgumentNullException(nameof(nodesList), "nodesList is null");
+            if (nodesList.Count < nN)
+                throw new ArgumentException($"nodesList.Count ({nodesList.Count}) is less than expected nN ({nN})", nameof(nodesList));
 
-            //inicjalizacja elementów - przesyłamy liste nodes dla każdego elementu
-            for (int i = 0; i < elements.Length; i++)
-                elements[i] = new Element(this.nodes, elementsWithNodes[i].ToArray(), gauss);
+            // inicjalizacja nodes z listy (lista nie tupla aby zapewnić wiekszą elastyczność)
+            for (int i = 0; i < nN; i++)
+            {
+                if (nodesList[i] == null || nodesList[i].Count < 2)
+                    throw new ArgumentException($"nodesList[{i}] does not contain at least two coordinates (x,y)");
+                nodes[i] = new Node(nodesList[i][0], nodesList[i][1]);      //w razie większej ilości koordów zmienic!!!
+            }
+
+            if (elementsWithNodes == null)
+                throw new ArgumentNullException(nameof(elementsWithNodes), "elementsWithNodes is null");
+            if (elementsWithNodes.Count < nE)
+                throw new ArgumentException($"elementsWithNodes.Count ({elementsWithNodes.Count}) is less than expected nE ({nE})", nameof(elementsWithNodes));
+
+            // inicjalizacja elementów - przesyłamy liste nodes dla każdego elementu
+            for (int i = 0; i < nE; i++)
+            {
+                var elList = elementsWithNodes[i];
+                if (elList == null || elList.Count == 0)
+                    throw new ArgumentException($"elementsWithNodes[{i}] is null or empty");
+
+                // Detect likely 1-based indices for clearer error message (do NOT convert automatically).
+                bool containsZero = false;
+                bool containsIndexEqualNN = false; // e.g. index == nN indicates 1-based indexing (last index == nN)
+                for (int j = 0; j < elList.Count; j++)
+                {
+                    int idx = elList[j];
+                    if (idx == 0) containsZero = true;
+                    if (idx == nN) containsIndexEqualNN = true;
+                }
+
+                if (containsIndexEqualNN && !containsZero)
+                {
+                    throw new IndexOutOfRangeException($"Grid constructor: element {i} appears to use 1-based indices (found index == {nN}).\n" +
+                        $"Input indices must be 0-based. Element indices: [{string.Join(", ", elList)}]");
+                }
+
+                // Validate indices are 0-based and in range. Do NOT convert.
+                for (int j = 0; j < elList.Count; j++)
+                {
+                    int idx = elList[j];
+                    if (idx < 0 || idx >= nN)
+                        throw new IndexOutOfRangeException($"Grid constructor: element {i} has node index {idx} out of range (0..{nN - 1}). Input indices must be 0-based.");
+                }
+
+                elements[i] = new Element(this.nodes, elList.ToArray(), gauss);
+            }
         }
 
         public void displayData()
@@ -102,7 +143,8 @@ namespace GridAndDetailsNamespace
             {
                 Console.WriteLine($"{i} wierzcholki: ");
                 foreach (var n in elements[i].nodes)
-                    Console.Write(n + " ");
+                    Console.Write($"({n.x}, {n.y}) ");
+                Console.WriteLine();
             }
         }
 

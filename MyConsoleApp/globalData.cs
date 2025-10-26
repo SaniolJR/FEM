@@ -79,6 +79,13 @@ namespace GlobalDataNamespace
                 //ręczne parsowanie aby pasowało do kultury systemu (problemy z . a ,)
                 getNumsToList<int>(elementNodes, "ELEMENTS", 4, line, i, s => int.Parse(s, NumberStyles.Integer, CultureInfo.InvariantCulture));
 
+                // normalizacja z 1-based do 0-based
+                // Zakładamy, że getNumsToList dodał właśnie `nums` elementów do elementNodes[i]
+                for (int k = 0; k < elementNodes[i].Count; k++)
+                {
+                    elementNodes[i][k] = elementNodes[i][k] - 1;
+                }
+
                 i++;
                 if (!enumerator.MoveNext())
                     break;
