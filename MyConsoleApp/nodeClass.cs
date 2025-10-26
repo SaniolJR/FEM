@@ -25,16 +25,30 @@ namespace GridAndDetailsNamespace
         public Element(Node[] allNodes, int[] nodesList, schemat_calk gauss)
         {
 
+            if (nodesList.Length <= 0 || nodesList == null)
+            {
+                throw new Exception("ELEMENT CALSS - nodeList.length <= 0");
+            }
+
             this.nodes = new Node[nodesList.Length];
 
             for (int idx = 0; idx < nodesList.Length; idx++)
             {
                 int nodeIndex = nodesList[idx];
+                if (nodeIndex >= nodes.Length)
+                {
+                    throw new Exception("nodeIndex >= nodes.Length");
+                }
                 this.nodes[idx] = allNodes[nodeIndex];
             }
             var elemUni = new ElemUniv(gauss);
             var dN_de = elemUni.dN_de;
             var dN_dn = elemUni.dN_dn;
+
+            if (dN_de == null || dN_dn == null)
+            {
+                throw new Exception("dN_de == null || dN_dn == null");
+            }
 
             this.jakobianList = new List<Jakobian>();
 
@@ -55,20 +69,24 @@ namespace GridAndDetailsNamespace
         Node[] nodes;
 
         //musi być przekazana lista jakas
-        public Grid(int nn, int ne, List<List<double>> nodesList, List<List<int>> elementsWithNodes)
+        public Grid(int nn, int ne, List<List<double>> nodesList, List<List<int>> elementsWithNodes, schemat_calk gauss)
         {
             this.nN = nn;
             this.nE = ne;
             this.elements = new Element[nE];
             this.nodes = new Node[nN];
 
+            if (nN <= 0 || nE <= 0)
+            {
+                throw new Exception("GRID CALSS - nN || nE <= 0");
+            }
             //inicjalizacja nodes z listy (lista nie tupla aby zapewnić wiekszą elastyczność)
             for (int i = 0; i < nN; i++)
                 nodes[i] = new Node(nodesList[i][0], nodesList[i][1]);      //w razie większej ilości koordów zmienic!!!
 
             //inicjalizacja elementów - przesyłamy liste nodes dla każdego elementu
-            for (int i = 0; i < nE; i++)
-                elements[i] = new Element(this.nodes, elementsWithNodes[i].ToArray());
+            for (int i = 0; i < elements.Length; i++)
+                elements[i] = new Element(this.nodes, elementsWithNodes[i].ToArray(), gauss);
         }
 
         public void displayData()
