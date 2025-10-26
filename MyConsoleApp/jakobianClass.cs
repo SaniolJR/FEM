@@ -66,10 +66,6 @@ namespace jakobianClass
 
         public Jakobian(Node[] nodes, List<double> dN_de, List<double> dN_dn)
         {
-            Console.WriteLine("DEBUG: nodes coords (in order): " + string.Join(", ", Array.ConvertAll(nodes, n => $"({n.x:F6},{n.y:F6})")));
-            Console.WriteLine("DEBUG: dN_de = " + string.Join(", ", dN_de.Select(v => v.ToString("F6"))));
-            Console.WriteLine("DEBUG: dN_dn = " + string.Join(", ", dN_dn.Select(v => v.ToString("F6"))));
-
             double dy_dn = 0.0;
             double dy_ds = 0.0;
             double dx_dn = 0.0;
@@ -96,18 +92,12 @@ namespace jakobianClass
             this.J1 = new double[,] { { dy_dn, -dx_dn }, { -dy_ds, dx_ds } };
             this.DetJ = J[0, 0] * J[1, 1] - (J[0, 1] * J[1, 0]);
 
-            if (Math.Abs(this.DetJ) < 1e-15)
-                throw new InvalidOperationException("detJ ~ 0 (element degenerate)");
-
-            // policz ∂N/∂x i ∂N/∂y dla każdego węzła (używamy wzoru z J^{-1})
-            // dNdx = ( dy_dn * dN_de - dy_ds * dN_dn ) / detJ
-            // dNdy = ( -dx_dn * dN_de + dx_ds * dN_dn ) / detJ
             this.dNdx = new double[4];
             this.dNdy = new double[4];
             for (int i = 0; i < 4; i++)
             {
-                double a = dN_de[i]; // ∂N/∂s (ksi)
-                double b = dN_dn[i]; // ∂N/∂n (eta)
+                double a = dN_de[i];
+                double b = dN_dn[i];
                 this.dNdx[i] = (dy_dn * a - dy_ds * b) / this.DetJ;
                 this.dNdy[i] = (-dx_dn * a + dx_ds * b) / this.DetJ;
             }
