@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using GridAndDetailsNamespace;
 using Gauss__schamet_calk;
 
@@ -26,8 +28,9 @@ namespace jakobianClass
             {
                 foreach (var wezel in wezlyList)
                 {
-                    dN_de.Add(ksiI(wezel.x));
-                    dN_dn.Add(etaI(wezel.y));
+                    // ∂N/∂ξ (dN_de) zależy od wartości η, ∂N/∂η (dN_dn) zależy od wartości ξ
+                    dN_de.Add(ksiI(wezel.y));
+                    dN_dn.Add(etaI(wezel.x));
                 }
             }
         }
@@ -53,12 +56,20 @@ namespace jakobianClass
 
     class Jakobian
     {
-        double detJ { get; }
-        double[,] J { get; }    //przystosowane do obliczen 2d
-        double[,] J1 { get; }
+        // publiczne właściwości do odczytu z zewnątrz
+        public double DetJ { get; private set; }
+        public double[,] J { get; private set; }    //przystosowane do obliczen 2d
+        public double[,] J1 { get; private set; }
+
+        public double[] dNdx { get; private set; }
+        public double[] dNdy { get; private set; }
 
         public Jakobian(Node[] nodes, List<double> dN_de, List<double> dN_dn)
         {
+            Console.WriteLine("DEBUG: nodes coords (in order): " + string.Join(", ", Array.ConvertAll(nodes, n => $"({n.x:F6},{n.y:F6})")));
+            Console.WriteLine("DEBUG: dN_de = " + string.Join(", ", dN_de.Select(v => v.ToString("F6"))));
+            Console.WriteLine("DEBUG: dN_dn = " + string.Join(", ", dN_dn.Select(v => v.ToString("F6"))));
+
             double dy_dn = 0.0;
             double dy_ds = 0.0;
             double dx_dn = 0.0;
@@ -83,7 +94,46 @@ namespace jakobianClass
 
             this.J = new double[,] { { dx_ds, dx_dn }, { dy_ds, dy_dn } };
             this.J1 = new double[,] { { dy_dn, -dx_dn }, { -dy_ds, dx_ds } };
-            this.detJ = J[0, 0] * J[1, 1] - (J[0, 1] * J[1, 0]);
+            this.DetJ = J[0, 0] * J[1, 1] - (J[0, 1] * J[1, 0]);
+
+            if (Math.Abs(this.DetJ) < 1e-15)
+                throw new InvalidOperationException("detJ ~ 0 (element degenerate)");
+
+            // policz ∂N/∂x i ∂N/∂y dla każdego węzła (używamy wzoru z J^{-1})
+            // dNdx = ( dy_dn * dN_de - dy_ds * dN_dn ) / detJ
+            // dNdy = ( -dx_dn * dN_de + dx_ds * dN_dn ) / detJ
+            this.dNdx = new double[4];
+            this.dNdy = new double[4];
+            for (int i = 0; i < 4; i++)
+            {
+                double a = dN_de[i]; // ∂N/∂s (ksi)
+                double b = dN_dn[i]; // ∂N/∂n (eta)
+                this.dNdx[i] = (dy_dn * a - dy_ds * b) / this.DetJ;
+                this.dNdy[i] = (-dx_dn * a + dx_ds * b) / this.DetJ;
+            }
+        }
+
+        public void displayJacobian()
+        {
+            // dN/dx
+            Console.WriteLine("wartosc dN/dx rowna sie");
+            for (int i = 0; i < dNdx.Length; i++)
+                Console.Write($"{dNdx[i]:F6}{(i < dNdx.Length - 1 ? ", " : ",")}");
+            Console.WriteLine();
+
+            // dN/dy
+            Console.WriteLine("wartosc dN/dy rowna sie");
+            for (int i = 0; i < dNdy.Length; i++)
+                Console.Write($"{dNdy[i]:F6}{(i < dNdy.Length - 1 ? ", " : ",")}");
+            Console.WriteLine();
+
+            // macierz J
+            Console.WriteLine("\nMacierz Jakobiego dla punktu calkowania");
+            Console.WriteLine($"{J[0, 0]:F7} {J[0, 1]:F7}");
+            Console.WriteLine($"{J[1, 0]:F7} {J[1, 1]:F7}");
+
+            // detJ
+            Console.WriteLine($"DetJ = {DetJ:F9}\n");
         }
     }
 
