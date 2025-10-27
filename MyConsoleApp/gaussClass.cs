@@ -16,6 +16,7 @@ namespace Gauss__schamet_calk
         public IReadOnlyList<double> Wspolczynniki => wspolczynniki;
 
         //2D wiec musi byc bardziej skomplikowane, aby każda lista wewnetrzna była readonly
+        //-------------------------------------------------wezły2D to punkty całkowania w 2D 
         public IReadOnlyList<IReadOnlyList<(double x, double y)>> Wezly2D =>
                             wezly2D == null ? null :
                             wezly2D.Select(r => (IReadOnlyList<(double x, double y)>)r.AsReadOnly()).ToList().AsReadOnly();
@@ -39,7 +40,7 @@ namespace Gauss__schamet_calk
             this.wspolczynniki2D = new List<List<(double x, double y)>>();
 
             //robiona tak aby łatwo było sie odnalezc powtorzonym   for(int i = 0; i <n; i++)
-            for (int j = N - 1; j >= 0; j--)
+            for (int j = 0; j < N; j++)
             {
 
                 var rowWezly = new List<(double x, double y)>(N);

@@ -79,6 +79,7 @@ namespace GridAndDetailsNamespace
             {
                 throw new Exception("GRID CALSS - nN || nE <= 0");
             }
+
             // inicjalizacja nodes z listy (lista nie tupla aby zapewnić wiekszą elastyczność)
             for (int i = 0; i < nN; i++)
             {
@@ -107,7 +108,7 @@ namespace GridAndDetailsNamespace
 
             Console.WriteLine("Liczba elementów: " + nE);
             Console.WriteLine("Elementy");
-            for (int i = 0; i < nE; i++)
+            for (int i = 0; i < 1; i++)
             {
                 Console.WriteLine($"{i} wierzcholki: ");
                 foreach (var n in elements[i].nodes)
