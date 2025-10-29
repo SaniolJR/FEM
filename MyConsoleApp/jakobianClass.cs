@@ -29,8 +29,8 @@ namespace jakobianClass
             {
                 foreach (var wezel in wezlyList)
                 {
-                    Console.Write("ksi: " + wezel.y + " ");
-                    Console.WriteLine("eta: " + wezel.x);
+                    Console.Write("ksi: " + wezel.x + " ");     //ksi to to e
+                    Console.WriteLine("eta: " + wezel.y);       //eta to to n
                     dN_de.Add(ksiI(wezel.y));
                     dN_dn.Add(etaI(wezel.x));
                 }
@@ -39,22 +39,22 @@ namespace jakobianClass
             Console.WriteLine("\n\n\n\n");
         }
 
-        List<double> ksiI(double ksi)
-        {
-            return new List<double>{
-                -0.25 * (1.0 - ksi),
-                -0.25 * (1.0 + ksi),
-                0.25 * (1 + ksi),
-                0.25 * (1 - ksi) };
-        }
-
-        List<double> etaI(double eta)
+        List<double> ksiI(double eta)
         {
             return new List<double>{
                 -0.25 * (1.0 - eta),
                 0.25 * (1.0 - eta),
                 0.25 * (1 + eta),
                 -0.25 * (1 + eta) };
+        }
+
+        List<double> etaI(double ksi)
+        {
+            return new List<double>{
+                -0.25 * (1.0 - ksi),
+                -0.25 * (1.0 + ksi),
+                0.25 * (1 + ksi),
+                0.25 * (1 - ksi) };
         }
     }
 
@@ -82,15 +82,17 @@ namespace jakobianClass
             if (dN_dn == null || dN_dn.Count < 4)
                 throw new Exception("Jakobian - dN_dn < 4");
 
-            Console.WriteLine("wypisywanie dN_de");
+            Console.WriteLine("\n");
+            Console.WriteLine("wypisywanie dN_de (ksi)");
             for (int i = 0; i < 4; i++)
-                Console.Write(dN_de[i] + "\t");
+                Console.Write($"{dN_de[i]:F6} ");
             Console.WriteLine();
+            //ksi zamienione z eta i kolejnosc jest 1, 3, 4, 2
+            Console.WriteLine("wypisywanie dN_dn (eta)");
+            for (int i = 0; i < 4; i++)
+                Console.Write($"{dN_dn[i]:F6} ");
+            Console.WriteLine("\n");
 
-            Console.WriteLine("wypisywanie dN_dn");
-            for (int i = 0; i < 4; i++)
-                Console.Write(dN_dn[i] + "\t");
-            Console.WriteLine();
 
             for (int i = 0; i < 4; i++)
             {
