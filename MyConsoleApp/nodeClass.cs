@@ -108,13 +108,13 @@ namespace GridAndDetailsNamespace
 
             Console.WriteLine("Liczba elementów: " + nE);
             Console.WriteLine("Elementy");
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < nE; i++)
             {
                 Console.WriteLine($"{i} wierzcholki: ");
                 foreach (var n in elements[i].nodes)
                     Console.Write($"({n.x}, {n.y}) ");
                 Console.WriteLine();
-
+                //wypisywanie jakobianow
                 if (elements[i].jakobianList != null)
                 {
                     Console.WriteLine("\n\n**********************************************************");

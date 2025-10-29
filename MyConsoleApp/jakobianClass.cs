@@ -24,19 +24,19 @@ namespace jakobianClass
 
             this.npc = wezlyAll.Count * wezlyAll[0].Count;
             //UWAGA NA KOLEJNOSC TUTAJ PRZY TESTACH
-            Console.WriteLine("\n\n\n\n");
+            //Console.WriteLine("\n\n\n\n");
             foreach (var wezlyList in wezlyAll)
             {
                 foreach (var wezel in wezlyList)
                 {
-                    Console.Write("ksi: " + wezel.x + " ");     //ksi to to e
-                    Console.WriteLine("eta: " + wezel.y);       //eta to to n
+                    //Console.Write("ksi: " + wezel.x + " ");     //ksi to to e
+                    //Console.WriteLine("eta: " + wezel.y);       //eta to to n
                     dN_de.Add(ksiI(wezel.y));
                     dN_dn.Add(etaI(wezel.x));
                 }
             }
 
-            Console.WriteLine("\n\n\n\n");
+            //Console.WriteLine("\n\n\n\n");
         }
 
         List<double> ksiI(double eta)
@@ -82,16 +82,18 @@ namespace jakobianClass
             if (dN_dn == null || dN_dn.Count < 4)
                 throw new Exception("Jakobian - dN_dn < 4");
 
-            Console.WriteLine("\n");
-            Console.WriteLine("wypisywanie dN_de (ksi)");
-            for (int i = 0; i < 4; i++)
-                Console.Write($"{dN_de[i]:F6} ");
-            Console.WriteLine();
-            //ksi zamienione z eta i kolejnosc jest 1, 3, 4, 2
-            Console.WriteLine("wypisywanie dN_dn (eta)");
-            for (int i = 0; i < 4; i++)
-                Console.Write($"{dN_dn[i]:F6} ");
-            Console.WriteLine("\n");
+            /*
+                        Console.WriteLine("\n");
+                        Console.WriteLine("wypisywanie dN_de (ksi)");
+                        for (int i = 0; i < 4; i++)
+                            Console.Write($"{dN_de[i]:F6} ");
+                        Console.WriteLine();
+                        //ksi zamienione z eta i kolejnosc jest 1, 3, 4, 2
+                        Console.WriteLine("wypisywanie dN_dn (eta)");
+                        for (int i = 0; i < 4; i++)
+                            Console.Write($"{dN_dn[i]:F6} ");
+                        Console.WriteLine("\n");*
+                        */
 
 
             for (int i = 0; i < 4; i++)
@@ -140,8 +142,8 @@ namespace jakobianClass
 
             // macierz J
             Console.WriteLine("\nMacierz Jakobiego dla punktu calkowania");
-            Console.WriteLine($"{J[0, 0]:F7} {J[0, 1]:F7}");
-            Console.WriteLine($"{J[1, 0]:F7} {J[1, 1]:F7}");
+            Console.WriteLine($"{J[0, 0]} {J[0, 1]}");
+            Console.WriteLine($"{J[1, 0]} {J[1, 1]}");
 
             // detJ
             Console.WriteLine($"DetJ = {DetJ:F9}\n");
