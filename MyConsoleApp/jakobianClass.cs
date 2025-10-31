@@ -107,38 +107,37 @@ namespace jakobianClass
             }
 
             this.J = new double[,] { { dx_ds, dy_ds },
-                                     { dx_dn, dy_dn } };
-            this.J1 = new double[,] { { dy_dn, -dy_ds },
-                                      { -dx_dn, dx_ds } };
+                                     { dx_dn,   dy_dn } };
             this.DetJ = J[0, 0] * J[1, 1] - (J[0, 1] * J[1, 0]);
+            this.J1 = new double[,] { { dy_dn / DetJ,  -dy_ds / DetJ },
+                                      { -dx_dn / DetJ,  dx_ds / DetJ } };
+
 
             //pozyskiwanie dndx i dndy
             this.dNdx = new double[4];
             this.dNdy = new double[4];
             for (int i = 0; i < 4; i++)
             {
-                double a = dN_de[i];
-                double b = dN_dn[i];
-                this.dNdx[i] = (dy_dn * a - dy_ds * b) / this.DetJ;
-                this.dNdy[i] = (-dx_dn * a + dx_ds * b) / this.DetJ;
+                this.dNdx[i] = J1[0, 0] * dN_de[i] + J1[0, 1] * dN_dn[i];
+                this.dNdy[i] = J1[1, 0] * dN_de[i] + J1[1, 1] * dN_dn[i];
             }
         }
 
         public void displayJacobian()
         {
             // dN/dx
-            /*
+
             Console.WriteLine("wartosc dN/dx rowna sie");
             for (int i = 0; i < dNdx.Length; i++)
-                Console.Write($"{dNdx[i]:F6}{(i < dNdx.Length - 1 ? ", " : ",")}");
+                Console.Write($"{dNdx[i]:F6}{(i < dNdx.Length - 1 ? ", " : "")}");
             Console.WriteLine();
 
             // dN/dy
             Console.WriteLine("wartosc dN/dy rowna sie");
             for (int i = 0; i < dNdy.Length; i++)
-                Console.Write($"{dNdy[i]:F6}{(i < dNdy.Length - 1 ? ", " : ",")}");
+                Console.Write($"{dNdy[i]:F6}{(i < dNdy.Length - 1 ? ", " : "")}");
             Console.WriteLine();
-            */
+
 
             // macierz J
             Console.WriteLine("\nMacierz Jakobiego dla punktu calkowania");
