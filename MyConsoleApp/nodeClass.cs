@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.WebSockets;
 using Gauss__schamet_calk;
 using jakobianClass;
 
@@ -20,9 +21,10 @@ namespace GridAndDetailsNamespace
     {
         public Node[] nodes { get; }
         public List<Jakobian> jakobianList { get; }  //KAŻDY ELEMENT ZE SCHEMATU CAŁKOWANIA POWINIEN MIEĆ SWÓJ JAKOBIAN!
+        public double[,] H { get; }
 
         //przypisywanie tych nodes z globalnych + przekazujemy juz wczeniej odpowiednie listy dla tego elementu!
-        public Element(Node[] allNodes, int[] nodesList, schemat_calk gauss)
+        public Element(Node[] allNodes, int[] nodesList, double K, schemat_calk gauss)
         {
             if (nodesList == null || nodesList.Length == 0)
                 throw new ArgumentException("ELEMENT CLASS - nodesList is null or empty", nameof(nodesList));
@@ -39,6 +41,8 @@ namespace GridAndDetailsNamespace
                 this.nodes[idx] = allNodes[nodeIndex];
             }
 
+
+
             //obliczanie pochodnych
             var elemUni = new ElemUniv(gauss);
             var dN_de = elemUni.dN_de;
@@ -53,13 +57,88 @@ namespace GridAndDetailsNamespace
 
             for (int i = 0; i < dN_de.Count; i++)
             {
-                jakobianList.Add(new Jakobian(nodes, dN_de[i], dN_dn[i]));
+                jakobianList.Add(new Jakobian(nodes, dN_de[i], dN_dn[i], K));
             }
 
+            this.H = obliczH(gauss);
         }
 
-    }
+        private double[,] obliczH(schemat_calk gauss)
+        {
+            double[,] res = new double[4, 4];
+            //parsowanie wag, tak aby sledziły punkty całkowania:
+            var wagi = new List<(double waga_ksi, double waga_eta)>();
+            //dodawanie kolejno
+            foreach (var row in gauss.Wspolczynniki2D)
+            {
+                foreach (var waga in row)
+                {
+                    wagi.Add((waga.x, waga.y));
+                }
+            }
 
+            if (this.jakobianList == null || this.jakobianList.Count == 0)
+            {
+                throw new Exception("[OBLICZ H] JakobianList nie istnieje!");
+            }
+            if (this.jakobianList.Count != wagi.Count)
+            {
+                throw new Exception("[OBLICZ H]: Jakobianów jest inna liczba niż par wag");
+
+            }
+            int n = jakobianList.Count;
+
+            //dla każdego wiersza trzeba dodać wartosci tego wiersza kazdego jakobiana * wagi
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int k = 0; k < n; k++)
+                    {
+                        // Use the local 'res' array and index into the wagi list.
+                        // TODO: replace the '1.0' multiplier with the actual jacobian/integrand contribution.
+                        res[i, j] += jakobianList[k].Hpc[i, j] * wagi[k].waga_ksi * wagi[k].waga_eta;
+                    }
+                }
+            }
+            return res;
+        }
+
+        public void displayElement()
+        {
+            foreach (var n in this.nodes)
+                Console.Write($"({n.x}, {n.y}) ");
+            Console.WriteLine();
+            //wypisywanie jakobianow
+            if (this.jakobianList == null)
+            {
+                throw new Exception("[Display Element]: jakobianList == null");
+            }
+            Console.WriteLine("\n\n**********************************************************");
+            Console.WriteLine("Jakobiany:");
+            for (int gp = 0; gp < this.jakobianList.Count; gp++)
+            {
+                var jacobian = this.jakobianList[gp];
+                Console.WriteLine($"\nPunkt calkowania gp={gp + 1}:");
+
+                jacobian.displayJacobian();
+            }
+            Console.WriteLine("**********************************************************");
+
+            //wypisywanie macierzy H
+            Console.WriteLine("****************MACIERZ H***************");
+            if (this.H == null)
+            {
+                throw new Exception("[Display Element]: H == null");
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                    Console.Write($"{H[i, j]:F6} \t");
+                Console.WriteLine();
+            }
+        }
+    }
     class Grid
     {
         int nN; //liczba nodes
@@ -68,7 +147,7 @@ namespace GridAndDetailsNamespace
         Node[] nodes;
 
         //musi być przekazana lista jakas
-        public Grid(int nn, int ne, List<List<double>> nodesList, List<List<int>> elementsWithNodes, schemat_calk gauss)
+        public Grid(int nn, int ne, List<List<double>> nodesList, List<List<int>> elementsWithNodes, double K, schemat_calk gauss)
         {
             this.nN = nn;
             this.nE = ne;
@@ -95,7 +174,7 @@ namespace GridAndDetailsNamespace
                 if (elList == null || elList.Count == 0)
                     throw new ArgumentException($"elementsWithNodes[{i}] is null or empty");
 
-                elements[i] = new Element(this.nodes, elList.ToArray(), gauss);
+                elements[i] = new Element(this.nodes, elList.ToArray(), K, gauss);
             }
         }
 
@@ -110,26 +189,8 @@ namespace GridAndDetailsNamespace
             Console.WriteLine("Elementy");
             for (int i = 0; i < nE; i++)
             {
-                Console.WriteLine($"{i} wierzcholki: ");
-                foreach (var n in elements[i].nodes)
-                    Console.Write($"({n.x}, {n.y}) ");
-                Console.WriteLine();
-                //wypisywanie jakobianow
-                if (elements[i].jakobianList != null)
-                {
-                    Console.WriteLine("\n\n**********************************************************");
-                    Console.WriteLine("Jakobiany dla Elementu " + i);
-                    for (int gp = 0; gp < elements[i].jakobianList.Count; gp++)
-                    {
-                        var jacobian = elements[i].jakobianList[gp];
-                        Console.WriteLine($"\nPunkt calkowania gp={gp + 1}:");
-
-                        jacobian.displayJacobian();
-                    }
-                    Console.WriteLine("**********************************************************");
-                }
+                elements[i].displayElement();
             }
-
         }
     }
 }

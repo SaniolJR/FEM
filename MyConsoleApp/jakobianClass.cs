@@ -13,6 +13,7 @@ namespace jakobianClass
         public List<List<double>> dN_de { get; private set; }
         public List<List<double>> dN_dn { get; private set; }
 
+
         //UWAGA! KLASA JEST PISANA TYLKO DLA INPUTU TABLIC 2D!
         //chdzi o to żę przysyłamy tablice z gaussClass tą 2D, trzebaby nadpisac konstruktor by dzialal
 
@@ -67,8 +68,9 @@ namespace jakobianClass
 
         public double[] dNdx { get; private set; }
         public double[] dNdy { get; private set; }
+        public double[,] Hpc { get; private set; }
 
-        public Jakobian(Node[] nodes, List<double> dN_de, List<double> dN_dn)
+        public Jakobian(Node[] nodes, List<double> dN_de, List<double> dN_dn, double k)
         {
             double dy_dn = 0.0;
             double dy_ds = 0.0;
@@ -121,12 +123,52 @@ namespace jakobianClass
                 this.dNdx[i] = J1[0, 0] * dN_de[i] + J1[0, 1] * dN_dn[i];
                 this.dNdy[i] = J1[1, 0] * dN_de[i] + J1[1, 1] * dN_dn[i];
             }
+
+            //oblcizanie macierzy Hpc
+            this.Hpc = new double[4, 4];
+            var dNdx_H = WxWT(this.dNdx);
+            var dNdy_H = WxWT(this.dNdy);
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    Hpc[i, j] = k * (dNdx_H[i, j] + dNdy_H[i, j]) * DetJ;
+                }
+            }
+
+        }
+
+        //funkcja dluzaco do pzemnozenia wektora z punktocalkowania przez wektor transponowany
+        //nazwa z W - wector, WT - wector transponowany
+        private double[,] WxWT(double[] pkt_calk)
+        {
+            if (pkt_calk.Length < 4)
+                throw new Exception("[obliczanie wektora * wektor transponowany]pkt_calk.Length < 4");
+            double[,] res = new double[4, 4];
+
+            for (int i = 0; i < 4; i++)
+            {
+                //wsm nie trzeba transponowac ig - przemnazam kazde pole wektora przez jego wszyskie?
+                for (int j = 0; j < 4; j++)
+                {
+                    res[i, j] = pkt_calk[i] * pkt_calk[j];
+                }
+            }
+            return res;
         }
 
         public void displayJacobian()
         {
-            // dN/dx
+            // macierz J
+            Console.WriteLine("\nMacierz Jakobiego dla punktu calkowania");
+            Console.WriteLine($"{J[0, 0]} {J[0, 1]}");
+            Console.WriteLine($"{J[1, 0]} {J[1, 1]}");
 
+            // detJ
+            Console.WriteLine($"DetJ = {DetJ:F9}\n");
+
+            // dN/dx
             Console.WriteLine("wartosc dN/dx rowna sie");
             for (int i = 0; i < dNdx.Length; i++)
                 Console.Write($"{dNdx[i]:F6}{(i < dNdx.Length - 1 ? ", " : "")}");
@@ -138,14 +180,16 @@ namespace jakobianClass
                 Console.Write($"{dNdy[i]:F6}{(i < dNdy.Length - 1 ? ", " : "")}");
             Console.WriteLine();
 
-
-            // macierz J
-            Console.WriteLine("\nMacierz Jakobiego dla punktu calkowania");
-            Console.WriteLine($"{J[0, 0]} {J[0, 1]}");
-            Console.WriteLine($"{J[1, 0]} {J[1, 1]}");
-
-            // detJ
-            Console.WriteLine($"DetJ = {DetJ:F9}\n");
+            //wyswietlanie H
+            /*
+            Console.WriteLine("\nMACIERZ H:");
+            for (int i = 0; i < this.H.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.H.GetLength(1); j++)
+                    Console.Write($"{H[i, j]:F6}\t");
+                Console.WriteLine();
+            }
+            */
         }
     }
 
