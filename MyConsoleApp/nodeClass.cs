@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
 using Gauss__schamet_calk;
-using jakobianClass;
+using Obliczenia_dla_pkt_calkowania;
 
 namespace GridAndDetailsNamespace
 {
@@ -44,7 +44,7 @@ namespace GridAndDetailsNamespace
 
 
             //obliczanie pochodnych
-            var elemUni = new ElemUniv(gauss);
+            var elemUni = new Pochodne_WspLokalne(gauss);
             var dN_de = elemUni.dN_de;
             var dN_dn = elemUni.dN_dn;
 
