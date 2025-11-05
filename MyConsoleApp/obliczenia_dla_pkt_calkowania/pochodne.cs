@@ -8,8 +8,8 @@ namespace Obliczenia_dla_pkt_calkowania
     {
         //liczba pkt całkowania
         public int npc { get; private set; }
-        public List<List<double>> dN_de { get; private set; }
-        public List<List<double>> dN_dn { get; private set; }
+        public List<List<double>> dN_dKsi { get; private set; }
+        public List<List<double>> dN_dEta { get; private set; }
 
 
         //UWAGA! KLASA JEST PISANA TYLKO DLA INPUTU TABLIC 2D!
@@ -18,8 +18,8 @@ namespace Obliczenia_dla_pkt_calkowania
 
         public Pochodne_WspLokalne(schemat_calk schemat_gaussa)
         {
-            this.dN_de = new List<List<double>>();
-            this.dN_dn = new List<List<double>>();
+            this.dN_dKsi = new List<List<double>>();
+            this.dN_dEta = new List<List<double>>();
             var wezlyAll = schemat_gaussa.Wezly2D;
 
             this.npc = wezlyAll.Count * wezlyAll[0].Count;
@@ -30,8 +30,8 @@ namespace Obliczenia_dla_pkt_calkowania
                 {
                     //Console.Write("ksi: " + wezel.x + " ");     //ksi to to e
                     //Console.WriteLine("eta: " + wezel.y);       //eta to to n
-                    dN_de.Add(ksiI(wezel.y));
-                    dN_dn.Add(etaI(wezel.x));
+                    dN_dKsi.Add(ksiI(wezel.y));
+                    dN_dEta.Add(etaI(wezel.x));
                 }
             }
             //Console.WriteLine("\n\n\n\n");

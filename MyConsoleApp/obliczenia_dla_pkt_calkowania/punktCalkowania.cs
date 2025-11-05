@@ -15,10 +15,12 @@ namespace Obliczenia_dla_pkt_calkowania
         public List<double> dN_dEta { get; private set; }
         public double[,] Hpc { get; private set; }
 
-        public PktCalkowania(double k, List<double> dN_dKsi, List<double> dN_dEta, Node[] wezlyElementu)
+        public PktCalkowania(double k, List<double> dN_dKsi, List<double> dN_dEta, Node[] wezlyElementu, double w1, double w2)
         {
             this.dN_dKsi = dN_dKsi;
             this.dN_dEta = dN_dEta;
+            this.waga1 = w1;
+            this.waga2 = w2;
 
             Jakobian jakobianKlasa = new Jakobian(wezlyElementu, dN_dKsi, dN_dEta);
 
