@@ -9,8 +9,11 @@ namespace GridAndDetailsNamespace
         Element[] elements;
         Node[] nodes;
 
-        //musi być przekazana lista jakas
-        public Grid(int nn, int ne, List<List<double>> nodesList, List<List<int>> elementsWithNodes, double K, schemat_calk gauss)
+        public Grid(int nn, int ne,
+                    List<List<double>> nodesList,
+                    List<List<int>> elementsWithNodes,
+                    double K,
+                    schemat_calk gauss)
         {
             this.nN = nn;
             this.nE = ne;
@@ -22,23 +25,26 @@ namespace GridAndDetailsNamespace
                 throw new Exception("GRID CALSS - nN || nE <= 0");
             }
 
-            // inicjalizacja nodes z listy (lista nie tupla aby zapewnić wiekszą elastyczność)
+            #region inicjalizacja nodes z listy
             for (int i = 0; i < nN; i++)
             {
                 if (nodesList[i] == null || nodesList[i].Count < 2)
-                    throw new ArgumentException($"nodesList[{i}] does not contain at least two coordinates (x,y)");
+                    throw new ArgumentException($"nodesList[{i}] ma inny wymiar niz (x,y)");
                 nodes[i] = new Node(nodesList[i][0], nodesList[i][1]);      //w razie większej ilości koordów zmienic!!!
             }
+            #endregion
 
-            // inicjalizacja elementów - przesyłamy liste nodes dla każdego elementu
+            #region inicjalizacja elementów - przesyłamy liste nodes dla każdego elementu
             for (int i = 0; i < nE; i++)
             {
                 var elList = elementsWithNodes[i];
+
                 if (elList == null || elList.Count == 0)
                     throw new ArgumentException($"elementsWithNodes[{i}] is null or empty");
 
                 elements[i] = new Element(this.nodes, elList.ToArray(), K, gauss);
             }
+            #endregion
         }
 
         public void displayData()
@@ -52,6 +58,7 @@ namespace GridAndDetailsNamespace
             Console.WriteLine("Elementy");
             for (int i = 0; i < nE; i++)
             {
+                Console.WriteLine($"\n\n----- Element {i} -----");
                 elements[i].displayElement();
             }
         }

@@ -30,7 +30,10 @@ namespace Obliczenia_dla_pkt_calkowania
 
             Pochodne_WspGlobalne pochodne_WspGlobalne = new Pochodne_WspGlobalne(jakobianKlasa, dN_dKsi, dN_dEta);
             this.dN_dX = pochodne_WspGlobalne.dN_dx;
-            this.dN_dX = pochodne_WspGlobalne.dN_dy;
+            this.dN_dY = pochodne_WspGlobalne.dN_dy;
+
+            if (dN_dX == null || dN_dY == null)
+                throw new Exception("dN_dX == null || dN_dY == null\n\n");
 
             //oblcizanie macierzy Hpc
             this.Hpc = new double[4, 4];
@@ -48,19 +51,48 @@ namespace Obliczenia_dla_pkt_calkowania
 
         private double[,] WxWT(double[] pkt_calk)
         {
-            if (pkt_calk.Length < 4)
-                throw new Exception("[obliczanie wektora * wektor transponowany]pkt_calk.Length < 4");
-            double[,] res = new double[4, 4];
-
-            for (int i = 0; i < 4; i++)
+            try
             {
-                //wsm nie trzeba transponowac ig - przemnazam kazde pole wektora przez jego wszyskie?
-                for (int j = 0; j < 4; j++)
+                if (pkt_calk.Length < 4)
+                    throw new Exception("[obliczanie wektora * wektor transponowany]pkt_calk.Length < 4");
+                double[,] res = new double[4, 4];
+
+                for (int i = 0; i < 4; i++)
                 {
-                    res[i, j] = pkt_calk[i] * pkt_calk[j];
+                    //wsm nie trzeba transponowac ig - przemnazam kazde pole wektora przez jego wszyskie?
+                    for (int j = 0; j < 4; j++)
+                    {
+                        res[i, j] = pkt_calk[i] * pkt_calk[j];
+                    }
                 }
+                return res;
             }
-            return res;
+            catch
+            {
+                throw new Exception("Błąd wywołania WxWT");
+            }
+        }
+
+        public void displayJ()
+        {
+            Console.WriteLine($"{this.J[0, 0]:F6} {this.J[0, 1]:F6}");
+            Console.WriteLine($"{this.J[1, 0]:F6} {this.J[1, 1]:F6}");
+        }
+
+        public void displayPochGlob()
+        {
+            Console.WriteLine("wWartosc dN/dx rowna sie:");
+            foreach (var pochodna in this.dN_dX)
+            {
+                Console.Write($"{pochodna:F6}\t");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Wartosc dN/dy rowna sie:");
+            foreach (var pochodna in this.dN_dY)
+            {
+                Console.Write($"{pochodna:F6}\t");
+            }
+            Console.WriteLine("\n");
         }
 
     }

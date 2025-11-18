@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace Gauss__schamet_calk
 {
 
@@ -78,6 +80,24 @@ namespace Gauss__schamet_calk
             }
             return res;
         }
+
+        public void displayPktCalkoania2D()
+        {
+            if (this.Wezly2D == null)
+                return;
+
+            Console.WriteLine("\n\n---- Punkty całkowania:  ----");
+            Console.WriteLine("Kolejność zgodnie ze wzkazówkami zegara -> [0,0], [0,1], [1,0], [1,1] ");
+            foreach (var row in this.Wezly2D)
+            {
+
+                foreach (var wezel in row)
+                {
+                    Console.WriteLine(wezel.x + " " + wezel.y);
+                }
+            }
+            Console.WriteLine("---------------------------\n\n");
+        }
     }
 
     public class schemat_calk_2pkt : schemat_calk
@@ -112,7 +132,6 @@ namespace Gauss__schamet_calk
             this.N = wezly.Count;
             build2D();
         }
-
-
     }
+
 }

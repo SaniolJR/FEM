@@ -14,6 +14,7 @@ namespace GridAndDetailsNamespace
         public Element(Node[] allNodes, int[] nodesList, double K, schemat_calk kwadratura_gaussa)
         {
 
+            #region Walidacja inputu
             if (nodesList == null || nodesList.Length == 0)
             {
                 throw new ArgumentException("ELEMENT CLASS - nodesList is null or empty", nameof(nodesList));
@@ -22,19 +23,23 @@ namespace GridAndDetailsNamespace
             {
                 throw new ArgumentException("ELEMENT CLASS - allNodes is null or empty", nameof(allNodes));
             }
+            #endregion
 
-
+            #region inicjalizacja tablicy nodes
             this.nodes = new Node[nodesList.Length];
             for (int idx = 0; idx < nodesList.Length; idx++)
             {
                 int nodeIndex = nodesList[idx];
+
                 //jeśli input jest 1-based to jest blad, bo walidacja juz nastapila
                 if (nodeIndex < 0 || nodeIndex >= allNodes.Length)
                 {
                     throw new IndexOutOfRangeException("Problem z 0-based");
                 }
+
                 this.nodes[idx] = allNodes[nodeIndex];
             }
+            #endregion
 
             //obliczanie pochodnych
             var pochodne_WspLokalne = new Pochodne_WspLokalne(kwadratura_gaussa);
@@ -105,7 +110,26 @@ namespace GridAndDetailsNamespace
 
         public void displayElement()
         {
+            //wyswietlanie detJ i J i pochodne w ukłądize globalnym
+            for (int i = 0; i < punktyCalkowania.Count; i++)
+            {
+                Console.WriteLine("\nMacierz jakobiego dla " + i + " pkt całkowania:");
+                Console.WriteLine("Wyznaznik J:" + punktyCalkowania[i].DetJ);
+                punktyCalkowania[i].displayJ();
+                //wyswietlanie pochodnych globalnych
+                punktyCalkowania[i].displayPochGlob();
+            }
 
+            //macierz H
+            Console.WriteLine("-- Wyświetlanie macierzy H --");
+            for (int i = 0; i < this.H.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.H.GetLength(1); j++)
+                {
+                    Console.Write($"{H[i, j]:F6}\t");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

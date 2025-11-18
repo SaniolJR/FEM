@@ -1,5 +1,6 @@
 namespace macierzGlobalna
 {
+    /*
     class macierzGlobalna
     {
         List<List<double>> H_glob;
@@ -18,8 +19,7 @@ namespace macierzGlobalna
                     this.H_glob[i].Add(0.0);
                 }
             }
-
-
         }
     }
+    */
 }

@@ -43,7 +43,7 @@ namespace Obliczenia_dla_pkt_calkowania
             this.J = new double[,]
             {
                 {dX_dKsi,   dY_dKsi},
-                {dX_dEta,   dY_dKsi}
+                {dX_dEta,   dY_dEta}
             };
 
             //obliczanie wspolczynnika
@@ -56,6 +56,5 @@ namespace Obliczenia_dla_pkt_calkowania
                 {-dX_dEta / DetJ,    dX_dKsi / DetJ}
             };
         }
-
     }
 }

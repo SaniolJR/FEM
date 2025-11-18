@@ -12,6 +12,7 @@ static class Program
         double K = globalData.Conductivity;
         Console.WriteLine(K);
         var gauss = new schemat_calk_2pkt();
+        gauss.displayPktCalkoania2D();
         var grid = new Grid(globalData.nN, globalData.nE, globalData.nodesCoord, globalData.elementNodes, K, gauss);
 
         grid.displayData();
