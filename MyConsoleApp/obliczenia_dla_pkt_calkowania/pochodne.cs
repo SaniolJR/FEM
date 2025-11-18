@@ -1,3 +1,4 @@
+using System.Data;
 using Gauss__schamet_calk;
 
 namespace Obliczenia_dla_pkt_calkowania
@@ -16,6 +17,8 @@ namespace Obliczenia_dla_pkt_calkowania
         public List<List<double>> dN_dEta { get; private set; }
 
         //zastosowanie wzorca singleton
+        //bo klasa jest wywoływana w dla każdego elementu
+        //w ten sposób unikam wielokrotnych obliczeń
         private static Pochodne_WspLokalne instance;
 
         private Pochodne_WspLokalne(schemat_calk schemat_gaussa)
@@ -44,10 +47,11 @@ namespace Obliczenia_dla_pkt_calkowania
             if (instance == null)
             {
                 instance = new Pochodne_WspLokalne(schemat_gaussa);
+
+                instance.displayPochodneLokalne();
             }
             return instance;
         }
-
 
         List<double> ksiI(double eta)
         {
@@ -69,6 +73,30 @@ namespace Obliczenia_dla_pkt_calkowania
                 -0.25 * (1.0 + ksi),    //dol
                 0.25 * (1 + ksi),       //gora
                 0.25 * (1 - ksi) };     //gora
+        }
+
+        public void displayPochodna(List<List<double>> pochodne)
+        {
+            if (pochodne == null)
+                throw new Exception("[Wyswietlanie poch. lokalnych] brak pochodnej");
+
+            foreach (var row in pochodne)
+            {
+                foreach (var val in row)
+                {
+                    Console.Write(val + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public void displayPochodneLokalne()
+        {
+            Console.WriteLine("\n\n---- Pochodne dN / dKsi ----");
+            instance.displayPochodna(instance.dN_dKsi);
+            Console.WriteLine("\n---- Pochodne dN / dEta ----");
+            instance.displayPochodna(instance.dN_dEta);
+            Console.WriteLine("\n");
         }
     }
 
