@@ -4,6 +4,10 @@ namespace Obliczenia_dla_pkt_calkowania
 {
     //klasa do obliczenai pochodnych względem współrzędnych naturalnych gaussa
     //czyli (eta,ksi) -> (x,y)
+
+    //UWAGA! KLASA JEST PISANA TYLKO DLA INPUTU TABLIC 2D!
+    //chdzi o to żę przysyłamy tablice z gaussClass tą 2D
+    // trzebaby nadpisac konstruktor by dzialal w 1D
     class Pochodne_WspLokalne
     {
         //liczba pkt całkowania
@@ -11,12 +15,10 @@ namespace Obliczenia_dla_pkt_calkowania
         public List<List<double>> dN_dKsi { get; private set; }
         public List<List<double>> dN_dEta { get; private set; }
 
+        //zastosowanie wzorca singleton
+        private static Pochodne_WspLokalne instance;
 
-        //UWAGA! KLASA JEST PISANA TYLKO DLA INPUTU TABLIC 2D!
-        //chdzi o to żę przysyłamy tablice z gaussClass tą 2D
-        // trzebaby nadpisac konstruktor by dzialal w 1D
-
-        public Pochodne_WspLokalne(schemat_calk schemat_gaussa)
+        private Pochodne_WspLokalne(schemat_calk schemat_gaussa)
         {
             this.dN_dKsi = new List<List<double>>();
             this.dN_dEta = new List<List<double>>();
@@ -36,6 +38,16 @@ namespace Obliczenia_dla_pkt_calkowania
             }
             //Console.WriteLine("\n\n\n\n");
         }
+
+        public static Pochodne_WspLokalne getInstance(schemat_calk schemat_gaussa)
+        {
+            if (instance == null)
+            {
+                instance = new Pochodne_WspLokalne(schemat_gaussa);
+            }
+            return instance;
+        }
+
 
         List<double> ksiI(double eta)
         {

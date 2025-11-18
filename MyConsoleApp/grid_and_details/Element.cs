@@ -42,7 +42,7 @@ namespace GridAndDetailsNamespace
             #endregion
 
             //obliczanie pochodnych
-            var pochodne_WspLokalne = new Pochodne_WspLokalne(kwadratura_gaussa);
+            var pochodne_WspLokalne = Pochodne_WspLokalne.getInstance(kwadratura_gaussa);
             var dN_dKSi = pochodne_WspLokalne.dN_dKsi;
             var dN_dEta = pochodne_WspLokalne.dN_dEta;
 
