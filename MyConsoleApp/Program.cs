@@ -1,7 +1,7 @@
 ﻿using GlobalDataNamespace;
 using GridAndDetailsNamespace;
 using Gauss__schamet_calk;
-using System.Runtime.CompilerServices;
+using MacierzGlobalnaNamespace;
 
 static class Program
 {
@@ -10,11 +10,16 @@ static class Program
 
         var globalData = new GlobalData("C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\Test2_4_4_MixGrid.txt");
         double K = globalData.Conductivity;
+        Console.WriteLine("ilosc wezlow: " + globalData.nN);
         Console.WriteLine(K);
+
+        MacierzGlobalna HG = MacierzGlobalna.getInstance(globalData.nN);
+
         var gauss = new schemat_calk_2pkt();
         gauss.displayPktCalkoania2D();
         var grid = new Grid(globalData.nN, globalData.nE, globalData.nodesCoord, globalData.elementNodes, K, gauss);
 
         grid.displayData();
+        MacierzGlobalna.displayHG();
     }
 }

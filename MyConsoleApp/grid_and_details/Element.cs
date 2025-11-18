@@ -1,5 +1,6 @@
 using Gauss__schamet_calk;
 using Obliczenia_dla_pkt_calkowania;
+using MacierzGlobalnaNamespace;
 
 namespace GridAndDetailsNamespace
 {
@@ -27,10 +28,16 @@ namespace GridAndDetailsNamespace
 
             #region inicjalizacja tablicy nodes
             this.nodes = new Node[nodesList.Length];
+            this.nodesIDX = nodesList;
+            //this.nodesIDX = nodesList.Select(id => id - 1).ToArray(); // 1-based -> 0-based
+
             for (int idx = 0; idx < nodesList.Length; idx++)
             {
                 int nodeIndex = nodesList[idx];
-
+                if (nodesIDX[idx] >= allNodes.Length)
+                {
+                    throw new IndexOutOfRangeException("Problem z 0-based");
+                }
                 //jeśli input jest 1-based to jest blad, bo walidacja juz nastapila
                 if (nodeIndex < 0 || nodeIndex >= allNodes.Length)
                 {

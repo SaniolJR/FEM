@@ -43,6 +43,9 @@ namespace GridAndDetailsNamespace
                     throw new ArgumentException($"elementsWithNodes[{i}] is null or empty");
 
                 elements[i] = new Element(this.nodes, elList.ToArray(), K, gauss);
+
+                MacierzGlobalnaNamespace.MacierzGlobalna.HG_dodajElement(elements[i]);
+
             }
             #endregion
         }
