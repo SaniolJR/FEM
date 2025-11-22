@@ -15,7 +15,8 @@ namespace GridAndDetailsNamespace
         private List<List<double>> dN_dEta;
         private BokElementu[] boki;
 
-        public Element(Node[] allNodes, int[] nodesList, double K, schemat_calk kwadratura_gaussa, HashSet<int> BC)
+        public Element(Node[] allNodes, int[] nodesList, double K, double alfa,
+                         schemat_calk kwadratura_gaussa, HashSet<int> BC)
         {
 
             #region Walidacja inputu
@@ -34,10 +35,10 @@ namespace GridAndDetailsNamespace
             this.nodesIDX = nodesList;
             this.boki = new BokElementu[4];
             //wg standartu MES:
-            boki[0] = new BokElementu(kwadratura_gaussa, true, -1, nodesIDX[0], nodesIDX[1], BC);        //dolny
-            boki[1] = new BokElementu(kwadratura_gaussa, false, 1, nodesIDX[1], nodesIDX[2], BC);        //prawy
-            boki[2] = new BokElementu(kwadratura_gaussa, true, 1, nodesIDX[2], nodesIDX[3], BC);         //gorny
-            boki[3] = new BokElementu(kwadratura_gaussa, false, -1, nodesIDX[3], nodesIDX[0], BC);       //lewy
+            boki[0] = new BokElementu(kwadratura_gaussa, true, -1, nodes[0], nodes[1], BC);        //dolny
+            boki[1] = new BokElementu(kwadratura_gaussa, false, 1, nodes[1], nodes[2], BC);        //prawy
+            boki[2] = new BokElementu(kwadratura_gaussa, true, 1, nodes[2], nodes[3], BC);         //gorny
+            boki[3] = new BokElementu(kwadratura_gaussa, false, -1, nodes[3], nodes[0], BC);       //lewy
 
             for (int idx = 0; idx < nodesList.Length; idx++)
             {
@@ -76,10 +77,10 @@ namespace GridAndDetailsNamespace
                 punktyCalkowania.Add(new PktCalkowania(K, dN_dKSi[i], dN_dEta[i], nodes, wagi[i].w1, wagi[i].w2));
             }
 
-            this.H = obliczH(kwadratura_gaussa);
+            this.H = obliczH(kwadratura_gaussa, alfa);
         }
 
-        private double[,] obliczH(schemat_calk kwadratura_gaussa)
+        private double[,] obliczH(schemat_calk kwadratura_gaussa, double alfa)
         {
             double[,] res = new double[4, 4];
 
@@ -103,9 +104,22 @@ namespace GridAndDetailsNamespace
                     }
                 }
             }
+
+            //dodawanie macierzy HBC
+            foreach (var bok in boki)
+            {
+                if (!bok.boundary)
+                    continue;
+                double[,] hbc = bokHBC.obliczHBC(bok, alfa);
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                        res[i, j] += hbc[i, j];
+                }
+            }
+
             return res;
         }
-
         //funkcja zwracająca tablice wag, gdzie wagi na index i będzia odpowaidac punkowi i w tabelach pochodnych
         private List<(double, double)> wagiPunktowTab(schemat_calk kwadratura_gaussa)
         {

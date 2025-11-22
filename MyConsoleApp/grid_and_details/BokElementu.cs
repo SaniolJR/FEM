@@ -13,13 +13,19 @@ namespace GridAndDetailsNamespace
         public List<double> wspolczynniki { get; }
         public int nodeIdx1 { get; }
         public int nodeIdx2 { get; }
+
+        public Node node1 { get; }
+        public Node node2 { get; }
         public bool boundary { get; }
 
-        public BokElementu(schemat_calk schemat, bool osPozioma, double val_os, int n1, int n2, HashSet<int> BC)
+        public BokElementu(schemat_calk schemat, bool osPozioma, double val_os,
+                            int n1, int n2, HashSet<int> BC, Node node1, Node node2)
         {
             this.wezly = schemat.wezly;
             this.wspolczynniki = schemat.wspolczynniki;
             this.funkcjeKsztaltu = new List<List<double>>();
+            this.node1 = node1;
+            this.node2 = node2;
 
             if (osPozioma)
             {
