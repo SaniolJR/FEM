@@ -8,9 +8,9 @@ namespace GridAndDetailsNamespace
     {
         //tablica z wartościami N1, N2,.. dal wszysich punktów całkowania
         //czyli wartości funkcji kształtu we wszyskich punktach całkowania
-        public List<List<double>> arr_N { get; }
+        public List<List<double>> funkcjeKsztaltu { get; }
         private List<double> wezly;
-        private List<double> wspolczynniki;
+        public List<double> wspolczynniki { get; }
         public int nodeIdx1 { get; }
         public int nodeIdx2 { get; }
         public bool boundary { get; }
@@ -19,17 +19,17 @@ namespace GridAndDetailsNamespace
         {
             this.wezly = schemat.wezly;
             this.wspolczynniki = schemat.wspolczynniki;
-            this.arr_N = new List<List<double>>();
+            this.funkcjeKsztaltu = new List<List<double>>();
 
             if (osPozioma)
             {
                 foreach (var wezel in wezly)
-                    this.arr_N.Add(oblicz_N_dlaPkt(wezel, val_os));
+                    this.funkcjeKsztaltu.Add(oblicz_N_dlaPkt(wezel, val_os));
             }
             else
             {
                 foreach (var wezel in wezly)
-                    this.arr_N.Add(oblicz_N_dlaPkt(val_os, wezel));
+                    this.funkcjeKsztaltu.Add(oblicz_N_dlaPkt(val_os, wezel));
             }
 
             this.nodeIdx1 = n1;
