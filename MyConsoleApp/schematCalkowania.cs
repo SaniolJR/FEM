@@ -5,8 +5,8 @@ namespace Gauss__schamet_calk
 
     public abstract class schemat_calk
     {
-        protected List<double> wezly;
-        protected List<double> wspolczynniki;
+        public List<double> wezly { get; protected set; }
+        public List<double> wspolczynniki { get; protected set; }
 
         protected List<List<(double, double)>> wezly2D;
         protected List<List<(double, double)>> wspolczynniki2D;

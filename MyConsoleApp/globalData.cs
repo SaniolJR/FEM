@@ -66,18 +66,33 @@ namespace GlobalDataNamespace
             this.elementNodes = new List<List<int>>();
             i = 0;
 
+
             while (true)
             {
                 string line = enumerator.Current.ToString();
                 //koniec jak wejdziemy na linie z oznaczeniem *BC
                 if (line.IndexOf("*BC") != -1)
+                {
+                    try
+                    {
+                        if (!enumerator.MoveNext())
+                            throw new Exception("Brak danych po oznaczeniu *BC.");
+
+                        this.BC = enumerator.Current.Split(',').Select(int.Parse).ToList();
+                    }
+                    catch
+                    {
+                        throw new Exception("Wczytywanie danych - problem z wczytaniem BC");
+                    }
                     break;
+                }
 
                 // przygotuj miejsce dla wiersza elementu
                 if (elementNodes.Count <= i)
                     elementNodes.Add(new List<int>());
                 //ręczne parsowanie aby pasowało do kultury systemu (problemy z . a ,)
-                getNumsToList<int>(elementNodes, "ELEMENTS", 4, line, i, s => int.Parse(s, NumberStyles.Integer, CultureInfo.InvariantCulture));
+                getNumsToList<int>(elementNodes, "ELEMENTS", 4, line, i,
+                                     s => int.Parse(s, NumberStyles.Integer, CultureInfo.InvariantCulture));
 
                 // normalizacja z 1-based do 0-based
                 // Zakładamy, że getNumsToList dodał właśnie `nums` elementów do elementNodes[i]
@@ -160,7 +175,6 @@ namespace GlobalDataNamespace
             }
 
         }
-
 
     }
 }

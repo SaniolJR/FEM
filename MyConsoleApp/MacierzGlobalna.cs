@@ -45,7 +45,6 @@ namespace MacierzGlobalnaNamespace
                 {
                     int I = element.nodesIDX[i];
                     int J = element.nodesIDX[j];
-                    Console.WriteLine("I, J" + I + " " + J);
                     if (I >= instance.HG.Length || J >= instance.HG.Length)
                         throw new Exception("I >= instance.HG.Length || J >= instance.HG.Length");
 

@@ -11,6 +11,9 @@ namespace GridAndDetailsNamespace
         public Node[] nodes { get; }
         public List<PktCalkowania> punktyCalkowania { get; }
         public double[,] H { get; }
+        private List<List<double>> dN_dKSi;
+        private List<List<double>> dN_dEta;
+        private BokElementu[] boki;
 
         public Element(Node[] allNodes, int[] nodesList, double K, schemat_calk kwadratura_gaussa)
         {
@@ -29,7 +32,12 @@ namespace GridAndDetailsNamespace
             #region inicjalizacja tablicy nodes
             this.nodes = new Node[nodesList.Length];
             this.nodesIDX = nodesList;
-            //this.nodesIDX = nodesList.Select(id => id - 1).ToArray(); // 1-based -> 0-based
+            this.boki = new BokElementu[4];
+            //wg standartu MES:
+            boki[0] = new BokElementu(kwadratura_gaussa, true, -1);        //dolny
+            boki[1] = new BokElementu(kwadratura_gaussa, false, 1);        //prawy
+            boki[2] = new BokElementu(kwadratura_gaussa, true, 1);         //gorny
+            boki[3] = new BokElementu(kwadratura_gaussa, false, -1);       //lewy
 
             for (int idx = 0; idx < nodesList.Length; idx++)
             {
@@ -50,8 +58,8 @@ namespace GridAndDetailsNamespace
 
             //obliczanie pochodnych
             var pochodne_WspLokalne = Pochodne_WspLokalne.getInstance(kwadratura_gaussa);
-            var dN_dKSi = pochodne_WspLokalne.dN_dKsi;
-            var dN_dEta = pochodne_WspLokalne.dN_dEta;
+            this.dN_dKSi = pochodne_WspLokalne.dN_dKsi;
+            this.dN_dEta = pochodne_WspLokalne.dN_dEta;
 
             if (dN_dKSi == null || dN_dEta == null)
             {
