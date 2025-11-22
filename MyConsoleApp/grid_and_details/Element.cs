@@ -15,6 +15,8 @@ namespace GridAndDetailsNamespace
         private List<List<double>> dN_dEta;
         private BokElementu[] boki;
 
+        private double[,] HBC;
+
         public Element(Node[] allNodes, int[] nodesList, double K, double alfa,
                          schemat_calk kwadratura_gaussa, HashSet<int> BC)
         {
@@ -81,10 +83,31 @@ namespace GridAndDetailsNamespace
                 punktyCalkowania.Add(new PktCalkowania(K, dN_dKSi[i], dN_dEta[i], nodes, wagi[i].w1, wagi[i].w2));
             }
 
-            this.H = obliczH(kwadratura_gaussa, alfa);
+            this.H = obliczH(kwadratura_gaussa);
+            this.HBC = new double[4, 4];
+            //liczenie macierzy HBC i dodanie do H
+            foreach (var bok in boki)
+            {
+                if (!bok.boundary)
+                    continue;
+                Console.WriteLine("obliczanie hbc" + bok);
+                if (bok == null)
+                    throw new Exception("[obliczH]: bokElementu == null");
+
+                var hbc_bok = bokHBC.obliczHBC(bok, alfa);
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        HBC[i, j] += hbc_bok[i, j];
+                        H[i, j] += hbc_bok[i, j];
+                    }
+                }
+            }
+
         }
 
-        private double[,] obliczH(schemat_calk kwadratura_gaussa, double alfa)
+        private double[,] obliczH(schemat_calk kwadratura_gaussa)
         {
             double[,] res = new double[4, 4];
 
@@ -106,23 +129,6 @@ namespace GridAndDetailsNamespace
                         var w1 = punktyCalkowania[k].waga1;
                         res[i, j] += punktyCalkowania[k].Hpc[i, j] * punktyCalkowania[k].waga1 * punktyCalkowania[k].waga2;
                     }
-                }
-            }
-
-            //dodawanie macierzy HBC
-            foreach (var bok in boki)
-            {
-                if (!bok.boundary)
-                    continue;
-
-                if (bok == null)
-                    throw new Exception("[obliczH]: bokElementu == null");
-
-                double[,] hbc = bokHBC.obliczHBC(bok, alfa);
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                        res[i, j] += hbc[i, j];
                 }
             }
 
@@ -163,6 +169,16 @@ namespace GridAndDetailsNamespace
                 for (int j = 0; j < this.H.GetLength(1); j++)
                 {
                     Console.Write($"{H[i, j]:F6}\t");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("-- Wyświetlanie macierzy HBC --");
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    Console.Write($"{HBC[i, j]:F6}\t");
                 }
                 Console.WriteLine();
             }

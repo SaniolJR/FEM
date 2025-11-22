@@ -14,6 +14,7 @@ static class Program
         var BC = globalData.BC;
         Console.WriteLine("ilosc wezlow: " + globalData.nN);
         Console.WriteLine(K);
+        Console.WriteLine(alfa);
 
         MacierzGlobalna HG = MacierzGlobalna.getInstance(globalData.nN);
 

@@ -13,7 +13,6 @@ namespace GridAndDetailsNamespace
         public List<double> wspolczynniki { get; }
         public int nodeIdx1 { get; }
         public int nodeIdx2 { get; }
-
         public Node node1 { get; }
         public Node node2 { get; }
         public bool boundary { get; }
@@ -26,6 +25,8 @@ namespace GridAndDetailsNamespace
             this.funkcjeKsztaltu = new List<List<double>>();
             if (node1 == null || node2 == null)
                 throw new Exception("[Bok elementu] node1 == null || node2 == null");
+            if (BC == null)
+                throw new Exception("[Bok elementu] BC == null");
 
             this.node1 = node1;
             this.node2 = node2;
@@ -44,10 +45,10 @@ namespace GridAndDetailsNamespace
             this.nodeIdx1 = n1;
             this.nodeIdx2 = n2;
 
-            this.boundary = false;
-
             if (BC.Contains(n1) && BC.Contains(n2))
                 this.boundary = true;
+            else
+                this.boundary = false;
 
         }
 

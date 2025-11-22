@@ -78,7 +78,7 @@ namespace GlobalDataNamespace
                         if (!enumerator.MoveNext())
                             throw new Exception("Brak danych po oznaczeniu *BC.");
 
-                        this.BC = new HashSet<int>(enumerator.Current.Split(',').Select(int.Parse).ToList());
+                        this.BC = new HashSet<int>(enumerator.Current.Split(',').Select(s => int.Parse(s) - 1).ToList());
                     }
                     catch
                     {
