@@ -1,6 +1,6 @@
 using Gauss__schamet_calk;
 using Obliczenia_dla_pkt_calkowania;
-using MacierzGlobalnaNamespace;
+using obliczemia_m_glob_namespace;
 
 namespace GridAndDetailsNamespace
 {
@@ -15,7 +15,7 @@ namespace GridAndDetailsNamespace
         private List<List<double>> dN_dEta;
         private BokElementu[] boki;
 
-        public Element(Node[] allNodes, int[] nodesList, double K, schemat_calk kwadratura_gaussa)
+        public Element(Node[] allNodes, int[] nodesList, double K, schemat_calk kwadratura_gaussa, HashSet<int> BC)
         {
 
             #region Walidacja inputu
@@ -34,10 +34,10 @@ namespace GridAndDetailsNamespace
             this.nodesIDX = nodesList;
             this.boki = new BokElementu[4];
             //wg standartu MES:
-            boki[0] = new BokElementu(kwadratura_gaussa, true, -1);        //dolny
-            boki[1] = new BokElementu(kwadratura_gaussa, false, 1);        //prawy
-            boki[2] = new BokElementu(kwadratura_gaussa, true, 1);         //gorny
-            boki[3] = new BokElementu(kwadratura_gaussa, false, -1);       //lewy
+            boki[0] = new BokElementu(kwadratura_gaussa, true, -1, nodesIDX[0], nodesIDX[1], BC);        //dolny
+            boki[1] = new BokElementu(kwadratura_gaussa, false, 1, nodesIDX[1], nodesIDX[2], BC);        //prawy
+            boki[2] = new BokElementu(kwadratura_gaussa, true, 1, nodesIDX[2], nodesIDX[3], BC);         //gorny
+            boki[3] = new BokElementu(kwadratura_gaussa, false, -1, nodesIDX[3], nodesIDX[0], BC);       //lewy
 
             for (int idx = 0; idx < nodesList.Length; idx++)
             {
@@ -105,7 +105,6 @@ namespace GridAndDetailsNamespace
             }
             return res;
         }
-
 
         //funkcja zwracająca tablice wag, gdzie wagi na index i będzia odpowaidac punkowi i w tabelach pochodnych
         private List<(double, double)> wagiPunktowTab(schemat_calk kwadratura_gaussa)

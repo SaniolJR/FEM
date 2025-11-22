@@ -1,7 +1,7 @@
 ﻿using GlobalDataNamespace;
 using GridAndDetailsNamespace;
 using Gauss__schamet_calk;
-using MacierzGlobalnaNamespace;
+using obliczemia_m_glob_namespace;
 
 static class Program
 {

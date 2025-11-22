@@ -44,7 +44,7 @@ namespace GridAndDetailsNamespace
 
                 elements[i] = new Element(this.nodes, elList.ToArray(), K, gauss);
 
-                MacierzGlobalnaNamespace.MacierzGlobalna.HG_dodajElement(elements[i]);
+                obliczemia_m_glob_namespace.MacierzGlobalna.HG_dodajElement(elements[i]);
 
             }
             #endregion

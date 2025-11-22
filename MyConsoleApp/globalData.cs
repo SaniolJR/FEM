@@ -18,7 +18,7 @@ namespace GlobalDataNamespace
         public int nE { get; }
         public List<List<double>> nodesCoord { get; }
         public List<List<int>> elementNodes { get; }
-        public List<int> BC { get; }
+        public HashSet<int> BC { get; }
 
         //konstruktur zczytuje od razu dane i je zapisuje na podstawie linku do pliku
         public GlobalData(string URL)
@@ -78,7 +78,7 @@ namespace GlobalDataNamespace
                         if (!enumerator.MoveNext())
                             throw new Exception("Brak danych po oznaczeniu *BC.");
 
-                        this.BC = enumerator.Current.Split(',').Select(int.Parse).ToList();
+                        this.BC = new HashSet<int>(enumerator.Current.Split(',').Select(int.Parse).ToList());
                     }
                     catch
                     {

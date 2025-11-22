@@ -1,6 +1,6 @@
 using GridAndDetailsNamespace;
 
-namespace MacierzGlobalnaNamespace
+namespace obliczemia_m_glob_namespace
 {
     //singleton - macierz globalna jest jedna!
     class MacierzGlobalna
