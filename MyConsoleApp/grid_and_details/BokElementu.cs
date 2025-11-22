@@ -24,6 +24,9 @@ namespace GridAndDetailsNamespace
             this.wezly = schemat.wezly;
             this.wspolczynniki = schemat.wspolczynniki;
             this.funkcjeKsztaltu = new List<List<double>>();
+            if (node1 == null || node2 == null)
+                throw new Exception("[Bok elementu] node1 == null || node2 == null");
+
             this.node1 = node1;
             this.node2 = node2;
 

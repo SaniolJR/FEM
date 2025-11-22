@@ -10,6 +10,8 @@ static class Program
 
         var globalData = new GlobalData("C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\Test2_4_4_MixGrid.txt");
         double K = globalData.Conductivity;
+        double alfa = globalData.Alfa;
+        var BC = globalData.BC;
         Console.WriteLine("ilosc wezlow: " + globalData.nN);
         Console.WriteLine(K);
 
@@ -17,7 +19,8 @@ static class Program
 
         var gauss = new schemat_calk_2pkt();
         gauss.displayPktCalkoania2D();
-        var grid = new Grid(globalData.nN, globalData.nE, globalData.nodesCoord, globalData.elementNodes, K, gauss);
+        var grid = new Grid(globalData.nN, globalData.nE, globalData.nodesCoord,
+                             globalData.elementNodes, K, alfa, BC, gauss);
 
         grid.displayData();
         MacierzGlobalna.displayHG();

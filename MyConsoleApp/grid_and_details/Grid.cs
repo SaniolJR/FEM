@@ -12,7 +12,7 @@ namespace GridAndDetailsNamespace
         public Grid(int nn, int ne,
                     List<List<double>> nodesList,
                     List<List<int>> elementsWithNodes,
-                    double K,
+                    double K, double alfa, HashSet<int> BC,
                     schemat_calk gauss)
         {
             this.nN = nn;
@@ -42,7 +42,7 @@ namespace GridAndDetailsNamespace
                 if (elList == null || elList.Count == 0)
                     throw new ArgumentException($"elementsWithNodes[{i}] is null or empty");
 
-                elements[i] = new Element(this.nodes, elList.ToArray(), K, gauss);
+                elements[i] = new Element(this.nodes, elList.ToArray(), K, alfa, gauss, BC);
 
                 obliczemia_m_glob_namespace.MacierzGlobalna.HG_dodajElement(elements[i]);
 
