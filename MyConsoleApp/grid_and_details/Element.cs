@@ -14,10 +14,10 @@ namespace GridAndDetailsNamespace
         private List<List<double>> dN_dKSi;
         private List<List<double>> dN_dEta;
         private BokElementu[] boki;
-
         private double[,] HBC;
+        private double[] P;
 
-        public Element(Node[] allNodes, int[] nodesList, double K, double alfa,
+        public Element(Node[] allNodes, int[] nodesList, double K, double alfa, double tempOt,
                          schemat_calk kwadratura_gaussa, HashSet<int> BC)
         {
 
@@ -85,7 +85,8 @@ namespace GridAndDetailsNamespace
 
             this.H = obliczH(kwadratura_gaussa);
             this.HBC = new double[4, 4];
-            //liczenie macierzy HBC i dodanie do H
+            this.P = new double[4];
+            //liczenie macierzy HBC i dodanie do H + obliczanie wektora P
             foreach (var bok in boki)
             {
                 if (!bok.boundary)
@@ -94,9 +95,13 @@ namespace GridAndDetailsNamespace
                 if (bok == null)
                     throw new Exception("[obliczH]: bokElementu == null");
 
-                var hbc_bok = bokHBC.obliczHBC(bok, alfa);
+                bokHBC bokHbc = new bokHBC(bok, alfa, tempOt);
+                var hbc_bok = bokHbc.HBC;
+                var P_bok = bokHbc.P;
+
                 for (int i = 0; i < 4; i++)
                 {
+                    this.P[i] += P_bok[i];
                     for (int j = 0; j < 4; j++)
                     {
                         HBC[i, j] += hbc_bok[i, j];
@@ -182,6 +187,13 @@ namespace GridAndDetailsNamespace
                 }
                 Console.WriteLine();
             }
+
+            Console.WriteLine("-- Wyświetlanie wektora P --");
+            for (int i = 0; i < 4; i++)
+            {
+                Console.Write($"{P[i]:F6}\t");
+            }
+            Console.WriteLine();
         }
     }
 }
