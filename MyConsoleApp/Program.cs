@@ -12,16 +12,18 @@ static class Program
         double K = globalData.Conductivity;
         double alfa = globalData.Alfa;
         var BC = globalData.BC;
+        var tempOt = globalData.Tot;
         Console.WriteLine("ilosc wezlow: " + globalData.nN);
         Console.WriteLine(K);
         Console.WriteLine(alfa);
+        Console.WriteLine(tempOt);
 
         MacierzGlobalna HG = MacierzGlobalna.getInstance(globalData.nN);
 
         var gauss = new schemat_calk_2pkt();
         gauss.displayPktCalkoania2D();
         var grid = new Grid(globalData.nN, globalData.nE, globalData.nodesCoord,
-                             globalData.elementNodes, K, alfa, BC, gauss);
+                             globalData.elementNodes, K, alfa, tempOt, BC, gauss);
 
         grid.displayData();
         MacierzGlobalna.displayHG();

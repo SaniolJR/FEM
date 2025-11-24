@@ -32,7 +32,7 @@ namespace obliczemia_m_glob_namespace
 
             this.detJ = Math.Sqrt((n1.x - n2.x) * (n1.x - n2.x) + (n1.y - n2.y) * (n1.y - n2.y)) / 2.0;
             this.HBC = obliczHBC(alfa);
-            this.P = obliczP(temp);
+            this.P = obliczP(temp, alfa);
         }
         private double[,] obliczHBC(double alfa)
         {
@@ -53,7 +53,7 @@ namespace obliczemia_m_glob_namespace
             return HBC;
         }
 
-        private double[] obliczP(double temp)
+        private double[] obliczP(double temp, double alfa)
         {
             double[] P = new double[4];
 
@@ -62,7 +62,7 @@ namespace obliczemia_m_glob_namespace
                 var currPkt = this.bok.funkcjeKsztaltu[k];
                 for (int i = 0; i < 4; i++)
                 {
-                    P[i] += currPkt[i] * bok.wspolczynniki[k] * temp * this.detJ;
+                    P[i] += currPkt[i] * bok.wspolczynniki[k] * temp * this.detJ * alfa;
                 }
             }
 

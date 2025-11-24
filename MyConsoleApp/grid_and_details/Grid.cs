@@ -9,24 +9,24 @@ namespace GridAndDetailsNamespace
         Element[] elements;
         Node[] nodes;
 
-        public Grid(int nn, int ne,
+        public Grid(int nN, int nE,
                     List<List<double>> nodesList,
                     List<List<int>> elementsWithNodes,
-                    double K, double alfa, HashSet<int> BC,
+                    double K, double alfa, double tempOt, HashSet<int> BC,
                     schemat_calk gauss)
         {
-            this.nN = nn;
-            this.nE = ne;
-            this.elements = new Element[nE];
-            this.nodes = new Node[nN];
+            this.nN = nN;
+            this.nE = nE;
+            this.elements = new Element[this.nE];
+            this.nodes = new Node[this.nN];
 
-            if (nN <= 0 || nE <= 0)
+            if (this.nN <= 0 || this.nE <= 0)
             {
                 throw new Exception("GRID CALSS - nN || nE <= 0");
             }
 
             #region inicjalizacja nodes z listy
-            for (int i = 0; i < nN; i++)
+            for (int i = 0; i < this.nN; i++)
             {
                 if (nodesList[i] == null || nodesList[i].Count < 2)
                     throw new ArgumentException($"nodesList[{i}] ma inny wymiar niz (x,y)");
@@ -35,14 +35,14 @@ namespace GridAndDetailsNamespace
             #endregion
 
             #region inicjalizacja elementów - przesyłamy liste nodes dla każdego elementu
-            for (int i = 0; i < nE; i++)
+            for (int i = 0; i < this.nE; i++)
             {
                 var elList = elementsWithNodes[i];
 
                 if (elList == null || elList.Count == 0)
                     throw new ArgumentException($"elementsWithNodes[{i}] is null or empty");
 
-                elements[i] = new Element(this.nodes, elList.ToArray(), K, alfa, gauss, BC);
+                elements[i] = new Element(this.nodes, elList.ToArray(), K, alfa, tempOt, gauss, BC);
 
                 obliczemia_m_glob_namespace.MacierzGlobalna.HG_dodajElement(elements[i]);
 
