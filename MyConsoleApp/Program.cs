@@ -27,5 +27,6 @@ static class Program
 
         grid.displayData();
         MacierzGlobalna.displayHG();
+        MacierzGlobalna.displayPG();
     }
 }

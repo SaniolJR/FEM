@@ -15,7 +15,7 @@ namespace GridAndDetailsNamespace
         private List<List<double>> dN_dEta;
         private BokElementu[] boki;
         private double[,] HBC;
-        private double[] P;
+        public double[] P { get; }
 
         public Element(Node[] allNodes, int[] nodesList, double K, double alfa, double tempOt,
                          schemat_calk kwadratura_gaussa, HashSet<int> BC)
@@ -42,7 +42,7 @@ namespace GridAndDetailsNamespace
                 int nodeIndex = nodesList[idx];
                 if (nodesIDX[idx] >= allNodes.Length)
                 {
-                    throw new IndexOutOfRangeException("Problem z 0-based");
+                    throw new IndexOutOfRangeException("Problem z 0-based " + nodesIDX[idx]);
                 }
                 //jeśli input jest 1-based to jest blad, bo walidacja juz nastapila
                 if (nodeIndex < 0 || nodeIndex >= allNodes.Length)

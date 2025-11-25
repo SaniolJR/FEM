@@ -6,6 +6,7 @@ namespace obliczemia_m_glob_namespace
     class MacierzGlobalna
     {
         private double[][] HG;
+        private double[] PG;
         private static MacierzGlobalna instance;
 
         private MacierzGlobalna(int N)
@@ -15,6 +16,7 @@ namespace obliczemia_m_glob_namespace
             {
                 HG[i] = new double[N];  //powinno inicjalizować zerami!
             }
+            PG = new double[N];
 
         }
 
@@ -38,6 +40,7 @@ namespace obliczemia_m_glob_namespace
             if (element.H == null)
                 throw new Exception("[HG_dodajElement]: element.H == null (H niepoliczone)");
 
+            //agregacja do HG
             int n = element.nodesIDX.Length;
             for (int i = 0; i < n; i++)
             {
@@ -50,6 +53,12 @@ namespace obliczemia_m_glob_namespace
 
                     instance.HG[I][J] += element.H[i, j];
                 }
+            }
+            //agregacja do PG
+            for (int i = 0; i < n; i++)
+            {
+                int I = element.nodesIDX[i];
+                instance.PG[I] += element.P[i];
             }
         }
 
@@ -68,5 +77,17 @@ namespace obliczemia_m_glob_namespace
             Console.WriteLine("\n");
         }
 
+        public static void displayPG()
+        {
+            if (instance == null || instance.HG == null)
+                throw new Exception("[Wyswietlanie PG]: instance == null || instance.HG == null");
+
+            Console.WriteLine("\n\n---- Wyświetlanie wektora P globalnego ----");
+            foreach (var val in instance.PG)
+            {
+                Console.Write(val + "\t");
+            }
+            Console.WriteLine("\n");
+        }
     }
 }

@@ -99,6 +99,7 @@ namespace GlobalDataNamespace
                 for (int k = 0; k < elementNodes[i].Count; k++)
                 {
                     elementNodes[i][k] = elementNodes[i][k] - 1;
+                    Console.WriteLine("element node: " + elementNodes[i][k]);
                 }
 
                 i++;
