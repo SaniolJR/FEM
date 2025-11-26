@@ -28,5 +28,19 @@ static class Program
         grid.displayData();
         MacierzGlobalna.displayHG();
         MacierzGlobalna.displayPG();
+        MacierzGlobalna.obliczTemp();
+        MacierzGlobalna.displayT();
+
+        //wymuszone dla każdego elementu na podstaiwe jego indexu, hashset dla optymalizacji i braku podwojnych wynikow
+        var hashOfNodes = new HashSet<int>();
+        foreach (var r in globalData.elementNodes)
+        {
+            foreach (var idx in r)
+            {
+                hashOfNodes.Add(idx);
+            }
+        }
+        foreach (var idx in hashOfNodes)
+            MacierzGlobalna.displayTforNode(idx);
     }
 }

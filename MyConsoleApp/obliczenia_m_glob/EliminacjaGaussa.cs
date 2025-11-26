@@ -10,12 +10,6 @@ public class EliminacjaGaussa
         var A = (double[][])HG.Clone();
         var B = (double[])PG.Clone();
 
-        //przeniesienie macierzy P na druga strone równania
-        for (int i = 0; i < N; i++)
-        {
-            B[i] = -B[i];
-        }
-
         //metoda eliminacji Gaussa - tworzenie macierzy trójkątnej z H
         //k - kolumna w której aktualnie liczymy - pivot
         for (int k = 0; k < N - 1; k++)

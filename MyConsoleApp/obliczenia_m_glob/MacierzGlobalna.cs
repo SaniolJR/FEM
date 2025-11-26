@@ -116,7 +116,7 @@ namespace obliczemia_m_glob_namespace
                 throw new Exception("[Wyswietlanie T dla elementu {idx}]: instance == null || instance.T == null");
             if (instance.T.Length <= idx)
                 throw new Exception($"[Wyswietlanie T dla elementu {idx}]: instance.T.Length <= idx");
-            Console.WriteLine($"Temperatura węzła {idx}: {instance.T[idx]:F4}\t")
+            Console.WriteLine($"Temperatura węzła {idx}: {instance.T[idx]:F4}\t");
         }
     }
 }
