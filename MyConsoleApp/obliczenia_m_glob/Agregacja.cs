@@ -1,16 +1,16 @@
 using GridAndDetailsNamespace;
 
-namespace obliczemia_m_glob_namespace
+namespace agregacja_namespace
 {
     //singleton - macierz globalna jest jedna!
-    class MacierzGlobalna
+    class AgregacjaSingleton
     {
         public double[][] HG { get; protected set; }
         public double[] PG { get; protected set; }
         public double[] T { get; protected set; }
-        private static MacierzGlobalna instance;
+        private static AgregacjaSingleton instance;
 
-        private MacierzGlobalna(int N)
+        private AgregacjaSingleton(int N)
         {
             HG = new double[N][];
             for (int i = 0; i < N; i++)
@@ -21,16 +21,16 @@ namespace obliczemia_m_glob_namespace
             T = new double[N];
         }
 
-        public static MacierzGlobalna getInstance(int N)
+        public static AgregacjaSingleton getInstance(int N)
         {
             if (instance == null)
             {
-                instance = new MacierzGlobalna(N);
+                instance = new AgregacjaSingleton(N);
             }
             return instance;
         }
 
-        public static void HG_dodajElement(Element element)
+        public static void dodajElement(Element element)
         {
             if (instance == null || instance.HG == null)
                 throw new Exception("[HG_dodajElement]: instance == null || HG == null");

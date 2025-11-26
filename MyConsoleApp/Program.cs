@@ -1,7 +1,7 @@
 ﻿using GlobalDataNamespace;
 using GridAndDetailsNamespace;
 using Gauss__schamet_calk;
-using obliczemia_m_glob_namespace;
+using agregacja_namespace;
 
 static class Program
 {
@@ -18,7 +18,7 @@ static class Program
         Console.WriteLine(alfa);
         Console.WriteLine(tempOt);
 
-        MacierzGlobalna HG = MacierzGlobalna.getInstance(globalData.nN);
+        AgregacjaSingleton HG = AgregacjaSingleton.getInstance(globalData.nN);
 
         var gauss = new schemat_calk_2pkt();
         gauss.displayPktCalkoania2D();
@@ -26,10 +26,10 @@ static class Program
                              globalData.elementNodes, K, alfa, tempOt, BC, gauss);
 
         grid.displayData();
-        MacierzGlobalna.displayHG();
-        MacierzGlobalna.displayPG();
-        MacierzGlobalna.obliczTemp();
-        MacierzGlobalna.displayT();
+        AgregacjaSingleton.displayHG();
+        AgregacjaSingleton.displayPG();
+        AgregacjaSingleton.obliczTemp();
+        AgregacjaSingleton.displayT();
 
         //wymuszone dla każdego elementu na podstaiwe jego indexu, hashset dla optymalizacji i braku podwojnych wynikow
         var hashOfNodes = new HashSet<int>();
@@ -41,6 +41,6 @@ static class Program
             }
         }
         foreach (var idx in hashOfNodes)
-            MacierzGlobalna.displayTforNode(idx);
+            AgregacjaSingleton.displayTforNode(idx);
     }
 }

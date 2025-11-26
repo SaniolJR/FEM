@@ -1,6 +1,6 @@
 using Gauss__schamet_calk;
 using Obliczenia_dla_pkt_calkowania;
-using obliczemia_m_glob_namespace;
+using agregacja_namespace;
 
 namespace GridAndDetailsNamespace
 {

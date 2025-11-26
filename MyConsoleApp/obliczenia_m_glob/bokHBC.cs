@@ -1,6 +1,6 @@
 using GridAndDetailsNamespace;
 
-namespace obliczemia_m_glob_namespace
+namespace agregacja_namespace
 {
     class bokHBC
     {

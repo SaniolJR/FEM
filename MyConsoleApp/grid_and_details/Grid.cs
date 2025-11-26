@@ -44,7 +44,7 @@ namespace GridAndDetailsNamespace
 
                 elements[i] = new Element(this.nodes, elList.ToArray(), K, alfa, tempOt, gauss, BC);
 
-                obliczemia_m_glob_namespace.MacierzGlobalna.HG_dodajElement(elements[i]);
+                agregacja_namespace.AgregacjaSingleton.dodajElement(elements[i]);
 
             }
             #endregion

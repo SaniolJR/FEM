@@ -1,4 +1,4 @@
-using obliczemia_m_glob_namespace;
+using agregacja_namespace;
 
 public class EliminacjaGaussa
 {
