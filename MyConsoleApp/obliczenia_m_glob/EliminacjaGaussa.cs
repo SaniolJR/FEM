@@ -2,13 +2,13 @@ using obliczemia_m_glob_namespace;
 
 public class EliminacjaGaussa
 {
-    public static double[] wyznaczWektorTemperatury(int N)
+    public static double[] wyznaczWektorTemperatury(double[][] HG, double[] PG)
     {
+        int N = PG.Length;
         double[] temperatury = new double[N];
-        var agregInstancja = MacierzGlobalna.getInstance(N);
         //podstaiwenie do kopii aby nie działać na macierzach orginalnych
-        var A = (double[][])agregInstancja.HG.Clone();
-        var B = (double[])agregInstancja.PG.Clone();
+        var A = (double[][])HG.Clone();
+        var B = (double[])PG.Clone();
 
         //przeniesienie macierzy P na druga strone równania
         for (int i = 0; i < N; i++)

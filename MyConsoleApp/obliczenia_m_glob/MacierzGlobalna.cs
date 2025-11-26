@@ -5,8 +5,9 @@ namespace obliczemia_m_glob_namespace
     //singleton - macierz globalna jest jedna!
     class MacierzGlobalna
     {
-        public double[][] HG { get; }
-        public double[] PG { get; }
+        public double[][] HG { get; protected set; }
+        public double[] PG { get; protected set; }
+        public double[] T { get; protected set; }
         private static MacierzGlobalna instance;
 
         private MacierzGlobalna(int N)
@@ -17,7 +18,7 @@ namespace obliczemia_m_glob_namespace
                 HG[i] = new double[N];  //powinno inicjalizować zerami!
             }
             PG = new double[N];
-
+            T = new double[N];
         }
 
         public static MacierzGlobalna getInstance(int N)
@@ -62,6 +63,12 @@ namespace obliczemia_m_glob_namespace
             }
         }
 
+        public static void obliczTemp()
+        {
+            if (instance == null || instance.HG == null || instance.PG == null)
+                throw new Exception("[HG_dodajElement]: instance == null || HG == null || instance.PG == null");
+            instance.T = EliminacjaGaussa.wyznaczWektorTemperatury(instance.HG, instance.PG);
+        }
         public static void displayHG()
         {
             if (instance == null || instance.HG == null)
@@ -79,8 +86,8 @@ namespace obliczemia_m_glob_namespace
 
         public static void displayPG()
         {
-            if (instance == null || instance.HG == null)
-                throw new Exception("[Wyswietlanie PG]: instance == null || instance.HG == null");
+            if (instance == null || instance.PG == null)
+                throw new Exception("[Wyswietlanie PG]: instance == null || instance.PG == null");
 
             Console.WriteLine("\n\n---- Wyświetlanie wektora P globalnego ----");
             foreach (var val in instance.PG)
@@ -88,6 +95,28 @@ namespace obliczemia_m_glob_namespace
                 Console.Write($"{val:F4}\t");
             }
             Console.WriteLine("\n");
+        }
+
+        public static void displayT()
+        {
+            if (instance == null || instance.T == null)
+                throw new Exception("[Wyswietlanie T]: instance == null || instance.T == null");
+
+            Console.WriteLine("\n\n---- Wyświetlanie wektora Temperatury ----");
+            foreach (var val in instance.T)
+            {
+                Console.Write($"{val:F4}\t");
+            }
+            Console.WriteLine("\n");
+        }
+
+        public static void displayTforNode(int idx)
+        {
+            if (instance == null || instance.T == null)
+                throw new Exception("[Wyswietlanie T dla elementu {idx}]: instance == null || instance.T == null");
+            if (instance.T.Length <= idx)
+                throw new Exception($"[Wyswietlanie T dla elementu {idx}]: instance.T.Length <= idx");
+            Console.WriteLine($"Temperatura węzła {idx}: {instance.T[idx]:F4}\t")
         }
     }
 }
