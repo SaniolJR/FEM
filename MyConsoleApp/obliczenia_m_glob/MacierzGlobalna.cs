@@ -5,8 +5,8 @@ namespace obliczemia_m_glob_namespace
     //singleton - macierz globalna jest jedna!
     class MacierzGlobalna
     {
-        private double[][] HG;
-        private double[] PG;
+        public double[][] HG { get; }
+        public double[] PG { get; }
         private static MacierzGlobalna instance;
 
         private MacierzGlobalna(int N)
@@ -71,7 +71,7 @@ namespace obliczemia_m_glob_namespace
             foreach (var row in instance.HG)
             {
                 foreach (var val in row)
-                    Console.Write($"{val:F6}\t");
+                    Console.Write($"{val:F4}\t");
                 Console.WriteLine();
             }
             Console.WriteLine("\n");
@@ -85,7 +85,7 @@ namespace obliczemia_m_glob_namespace
             Console.WriteLine("\n\n---- Wyświetlanie wektora P globalnego ----");
             foreach (var val in instance.PG)
             {
-                Console.Write(val + "\t");
+                Console.Write($"{val:F4}\t");
             }
             Console.WriteLine("\n");
         }
