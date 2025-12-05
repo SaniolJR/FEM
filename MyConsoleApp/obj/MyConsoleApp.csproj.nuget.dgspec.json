@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj": {}
+    "c:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj": {
+    "c:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj",
+        "projectUniqueName": "c:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj",
         "projectName": "MyConsoleApp",
-        "projectPath": "C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj",
+        "projectPath": "c:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\MyConsoleApp.csproj",
         "packagesPath": "C:\\Users\\mateu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\obj\\",
+        "outputPath": "c:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\MyConsoleApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

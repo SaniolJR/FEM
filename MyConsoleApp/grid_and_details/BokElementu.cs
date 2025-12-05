@@ -52,7 +52,7 @@ namespace GridAndDetailsNamespace
 
         }
 
-        private List<double> oblicz_N_dlaPkt(double ksi, double eta)
+        public static List<double> oblicz_N_dlaPkt(double ksi, double eta)
         {
             return new List<double>
             {

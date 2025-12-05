@@ -16,6 +16,7 @@ namespace GridAndDetailsNamespace
         private BokElementu[] boki;
         private double[,] HBC;
         public double[] P { get; }
+        public double[,] C { get; }
 
         public Element(Node[] allNodes, int[] nodesList, double K, double alfa, double tempOt,
                          schemat_calk kwadratura_gaussa, HashSet<int> BC)
