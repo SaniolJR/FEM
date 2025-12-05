@@ -87,7 +87,9 @@ namespace GridAndDetailsNamespace
                                         wagiIWezly[i].ksi, wagiIWezly[i].eta, c, ro));
             }
 
-            this.H = obliczH(kwadratura_gaussa);
+            this.H = obliczHlubC(kwadratura_gaussa, true);
+            this.C = obliczHlubC(kwadratura_gaussa, false);
+
             this.HBC = new double[4, 4];
             this.P = new double[4];
             //liczenie macierzy HBC i dodanie do H + obliczanie wektora P
@@ -116,7 +118,8 @@ namespace GridAndDetailsNamespace
 
         }
 
-        private double[,] obliczH(schemat_calk kwadratura_gaussa)
+        //funkcja która oblicza mcierz H lub C elementu, decyzja o tym którą oblicza jest na podstawie flagi H
+        private double[,] obliczHlubC(schemat_calk kwadratura_gauss, bool H)
         {
             double[,] res = new double[4, 4];
 
@@ -136,13 +139,19 @@ namespace GridAndDetailsNamespace
                     for (int k = 0; k < n; k++)
                     {
                         var w1 = punktyCalkowania[k].waga1;
-                        res[i, j] += punktyCalkowania[k].Hpc[i, j] * punktyCalkowania[k].waga1 * punktyCalkowania[k].waga2;
+                        if (H)
+                            res[i, j] += punktyCalkowania[k].Hpc[i, j] * punktyCalkowania[k].waga1 * punktyCalkowania[k].waga2;
+                        else
+                            res[i, j] += punktyCalkowania[k].Cpc[i, j] * punktyCalkowania[k].waga1 * punktyCalkowania[k].waga2;
                     }
                 }
             }
 
             return res;
         }
+
+
+
         //funkcja zwracająca tablice wag, gdzie wagi na index i będzia odpowaidac punkowi i w tabelach pochodnych
         private List<(double, double, double, double)> wagiIWezlyPunktowTab(schemat_calk kwadratura_gaussa)
         {
