@@ -13,6 +13,8 @@ static class Program
         double alfa = globalData.Alfa;
         var BC = globalData.BC;
         var tempOt = globalData.Tot;
+        var c = globalData.SpecificHeat;
+        var ro = globalData.Density;
         Console.WriteLine("ilosc wezlow: " + globalData.nN);
         Console.WriteLine(K);
         Console.WriteLine(alfa);
@@ -23,7 +25,7 @@ static class Program
         var gauss = new schemat_calk_2pkt();
         gauss.displayPktCalkoania2D();
         var grid = new Grid(globalData.nN, globalData.nE, globalData.nodesCoord,
-                             globalData.elementNodes, K, alfa, tempOt, BC, gauss);
+                             globalData.elementNodes, K, alfa, tempOt, c, ro, BC, gauss);
 
         grid.displayData();
         AgregacjaSingleton.displayHG();

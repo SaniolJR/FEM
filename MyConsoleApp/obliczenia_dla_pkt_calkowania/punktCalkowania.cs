@@ -4,6 +4,8 @@ namespace Obliczenia_dla_pkt_calkowania
 {
     class PktCalkowania
     {
+        public double ksi { get; private set; }
+        public double eta { get; private set; }
         public double waga1 { get; private set; }
         public double waga2 { get; private set; }
         public double DetJ { get; private set; }
@@ -17,7 +19,8 @@ namespace Obliczenia_dla_pkt_calkowania
         public double[,] Cpc { get; private set; }
 
         public PktCalkowania(double k, List<double> dN_dKsi, List<double> dN_dEta,
-                             Node[] wezlyElementu, double w1, double w2, double ksi, double eta)
+                             Node[] wezlyElementu, double w1, double w2,
+                             double ksi, double eta, double c, double ro)
         {
             this.dN_dKsi = dN_dKsi;
             this.dN_dEta = dN_dEta;
@@ -51,7 +54,16 @@ namespace Obliczenia_dla_pkt_calkowania
             }
 
             //obliczanie macierzy Cpc
-            //TODO: punkt całkowania musi znac swoje ksi i eta
+            var przemnozoneWektoryN = WxWT(BokElementu.oblicz_N_dlaPkt(this.ksi, this.eta).ToArray());
+            this.Cpc = new double[4, 4];
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    Cpc[i, j] = c * ro * przemnozoneWektoryN[i, j] * DetJ;
+                }
+            }
         }
 
         private double[,] WxWT(double[] pkt_calk)

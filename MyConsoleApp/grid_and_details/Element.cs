@@ -18,7 +18,8 @@ namespace GridAndDetailsNamespace
         public double[] P { get; }
         public double[,] C { get; }
 
-        public Element(Node[] allNodes, int[] nodesList, double K, double alfa, double tempOt,
+        public Element(Node[] allNodes, int[] nodesList, double K, double alfa,
+                        double tempOt, double c, double ro,
                          schemat_calk kwadratura_gaussa, HashSet<int> BC)
         {
 
@@ -83,7 +84,7 @@ namespace GridAndDetailsNamespace
             {
                 punktyCalkowania.Add(new PktCalkowania(K, dN_dKSi[i], dN_dEta[i],
                                         nodes, wagiIWezly[i].w1, wagiIWezly[i].w2,
-                                        wagiIWezly[i].ksi, wagiIWezly[i].eta));
+                                        wagiIWezly[i].ksi, wagiIWezly[i].eta, c, ro));
             }
 
             this.H = obliczH(kwadratura_gaussa);

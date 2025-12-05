@@ -12,8 +12,8 @@ namespace GridAndDetailsNamespace
         public Grid(int nN, int nE,
                     List<List<double>> nodesList,
                     List<List<int>> elementsWithNodes,
-                    double K, double alfa, double tempOt, HashSet<int> BC,
-                    schemat_calk gauss)
+                    double K, double alfa, double tempOt, double c, double ro,
+                     HashSet<int> BC, schemat_calk gauss)
         {
             this.nN = nN;
             this.nE = nE;
@@ -42,7 +42,7 @@ namespace GridAndDetailsNamespace
                 if (elList == null || elList.Count == 0)
                     throw new ArgumentException($"elementsWithNodes[{i}] is null or empty");
 
-                elements[i] = new Element(this.nodes, elList.ToArray(), K, alfa, tempOt, gauss, BC);
+                elements[i] = new Element(this.nodes, elList.ToArray(), K, alfa, tempOt, c, ro, gauss, BC);
 
                 agregacja_namespace.AgregacjaSingleton.dodajElement(elements[i]);
 
