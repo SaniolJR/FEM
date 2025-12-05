@@ -24,6 +24,8 @@ namespace Obliczenia_dla_pkt_calkowania
         {
             this.dN_dKsi = dN_dKsi;
             this.dN_dEta = dN_dEta;
+            this.ksi = ksi;
+            this.eta = eta;
             this.waga1 = w1;
             this.waga2 = w2;
 

@@ -8,7 +8,7 @@ static class Program
     static void Main(string[] args)
     {
 
-        var globalData = new GlobalData("C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\Test2_4_4_MixGrid.txt");
+        var globalData = new GlobalData("C:\\Users\\mateu\\Desktop\\studia\\SEMESTR 5\\mes\\Test1_4_4.txt");
         double K = globalData.Conductivity;
         double alfa = globalData.Alfa;
         var BC = globalData.BC;
@@ -19,6 +19,8 @@ static class Program
         Console.WriteLine(K);
         Console.WriteLine(alfa);
         Console.WriteLine(tempOt);
+        Console.WriteLine(c);
+        Console.WriteLine(ro);
 
         AgregacjaSingleton HG = AgregacjaSingleton.getInstance(globalData.nN);
 
@@ -29,6 +31,7 @@ static class Program
 
         grid.displayData();
         AgregacjaSingleton.displayHG();
+        AgregacjaSingleton.displayCG();
         AgregacjaSingleton.displayPG();
         AgregacjaSingleton.obliczTemp();
         AgregacjaSingleton.displayT();

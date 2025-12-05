@@ -209,6 +209,16 @@ namespace GridAndDetailsNamespace
                 Console.Write($"{P[i]:F6}\t");
             }
             Console.WriteLine();
+
+            Console.WriteLine("-- Wyświetlanie macierzy C --");
+            for (int i = 0; i < this.C.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.C.GetLength(1); j++)
+                {
+                    Console.Write($"{C[i, j]:F6}\t");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
