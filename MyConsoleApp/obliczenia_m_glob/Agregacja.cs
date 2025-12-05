@@ -6,6 +6,7 @@ namespace agregacja_namespace
     class AgregacjaSingleton
     {
         public double[][] HG { get; protected set; }
+        public double[][] CG { get; protected set; }
         public double[] PG { get; protected set; }
         public double[] T { get; protected set; }
         private static AgregacjaSingleton instance;
@@ -13,9 +14,11 @@ namespace agregacja_namespace
         private AgregacjaSingleton(int N)
         {
             HG = new double[N][];
+            CG = new double[N][];
             for (int i = 0; i < N; i++)
             {
                 HG[i] = new double[N];  //powinno inicjalizować zerami!
+                CG[i] = new double[N];
             }
             PG = new double[N];
             T = new double[N];
@@ -41,7 +44,7 @@ namespace agregacja_namespace
             if (element.H == null)
                 throw new Exception("[HG_dodajElement]: element.H == null (H niepoliczone)");
 
-            //agregacja do HG
+            //agregacja do HG i CG jednoczesnie
             int n = element.nodesIDX.Length;
             for (int i = 0; i < n; i++)
             {
@@ -51,8 +54,11 @@ namespace agregacja_namespace
                     int J = element.nodesIDX[j];
                     if (I >= instance.HG.Length || J >= instance.HG.Length)
                         throw new Exception("I >= instance.HG.Length || J >= instance.HG.Length");
+                    if (I >= instance.CG.Length || J >= instance.CG.Length)
+                        throw new Exception("I >= instance.CG.Length || J >= instance.CG.Length");
 
                     instance.HG[I][J] += element.H[i, j];
+                    instance.CG[I][J] += element.C[i, j];
                 }
             }
             //agregacja do PG
@@ -74,8 +80,24 @@ namespace agregacja_namespace
             if (instance == null || instance.HG == null)
                 throw new Exception("[Wyswietlanie HG]: instance == null || instance.HG == null");
 
-            Console.WriteLine("\n\n---- Wyświetlanie macierzy globalnej ----");
+            Console.WriteLine("\n\n---- Wyświetlanie macierzy globalnej H ----");
             foreach (var row in instance.HG)
+            {
+                foreach (var val in row)
+                    Console.Write($"{val:F4}\t");
+                Console.WriteLine();
+            }
+            Console.WriteLine("\n");
+        }
+
+
+        public static void displayCG()
+        {
+            if (instance == null || instance.CG == null)
+                throw new Exception("[Wyswietlanie CG]: instance == null || instance.CG == null");
+
+            Console.WriteLine("\n\n---- Wyświetlanie macierzy globalnej C ----");
+            foreach (var row in instance.CG)
             {
                 foreach (var val in row)
                     Console.Write($"{val:F4}\t");
