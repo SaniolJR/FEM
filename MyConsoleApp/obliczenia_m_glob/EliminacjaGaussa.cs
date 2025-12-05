@@ -6,10 +6,23 @@ public class EliminacjaGaussa
     {
         int N = PG.Length;
         double[] temperatury = new double[N];
-        //podstaiwenie do kopii aby nie działać na macierzach orginalnych
-        var A = (double[][])HG.Clone();
+        //głęboka kopia, aby eliminacja nie niszczyła macierzy wejściowej
+        var A = new double[N][];
+        for (int i = 0; i < N; i++)
+        {
+            A[i] = (double[])HG[i].Clone();
+        }
+
         var B = (double[])PG.Clone();
 
+        return rozwiazRownanieGaussa(A, B);
+    }
+
+    public static double[] rozwiazRownanieGaussa(double[][] A, double[] B)
+    {
+
+        int N = A.Length;
+        double[] temperatury = new double[N];
         //metoda eliminacji Gaussa - tworzenie macierzy trójkątnej z H
         //k - kolumna w której aktualnie liczymy - pivot
         for (int k = 0; k < N - 1; k++)

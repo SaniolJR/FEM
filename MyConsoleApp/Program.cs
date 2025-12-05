@@ -36,16 +36,68 @@ static class Program
         AgregacjaSingleton.obliczTemp();
         AgregacjaSingleton.displayT();
 
-        //wymuszone dla każdego elementu na podstaiwe jego indexu, hashset dla optymalizacji i braku podwojnych wynikow
-        var hashOfNodes = new HashSet<int>();
-        foreach (var r in globalData.elementNodes)
+        // pobranie danych do liczenia temperatury w czasie
+        var instance = AgregacjaSingleton.getInstance(globalData.nN);
+        double dt = globalData.SimulationStepTime;
+
+        // z lewej strony macierz A = H + C/dt
+        var A = new double[globalData.nN][];
+        for (int i = 0; i < globalData.nN; i++)
         {
-            foreach (var idx in r)
+            A[i] = (double[])instance.HG[i].Clone();
+            for (int j = 0; j < globalData.nN; j++)
             {
-                hashOfNodes.Add(idx);
+                A[i][j] += instance.CG[i][j] / dt;
             }
         }
-        foreach (var idx in hashOfNodes)
-            AgregacjaSingleton.displayTforNode(idx);
+
+        // inicjalizacja wektora temperatury t0
+        double[] t0 = new double[globalData.nN];
+        Array.Fill(t0, globalData.InitialTemp);
+
+        // petla po timestep - petla czasu
+        for (int s = (int)dt; s <= globalData.SimulationTime; s += (int)dt)
+        {
+            double[] B = new double[globalData.nN];
+
+            for (int i = 0; i < globalData.nN; i++)
+            {
+                double tmp = 0;
+                for (int j = 0; j < globalData.nN; j++)
+                {
+                    // (C / dt) * t0
+                    tmp += (instance.CG[i][j] / dt) * t0[j];
+                }
+                // dodanie P do prawej strony
+                B[i] = tmp + instance.PG[i];
+            }
+
+            /*
+            Console.WriteLine($"===== Iteracja {s / dt} =====");
+            Console.WriteLine($"===== macierz H + C/dt =====");
+            foreach (var row in A)
+            {
+                foreach (var val in row)
+                {
+                    // czytelne formatowanie z separatorem tab zamiast przypadkowego dodawania znaku do liczby
+                    Console.Write($"{val:F6}\t");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"===== wektor ((C / dt) * t0) + P =====");
+            foreach (var val in B)
+            {
+                Console.Write($"{val:F6}\t");
+            }
+            Console.WriteLine();
+            */
+
+            var t1 = EliminacjaGaussa.wyznaczWektorTemperatury(A, B);
+
+            Console.WriteLine($"Czas {s}: Min {t1.Min():F4} Max {t1.Max():F4}");
+            t0 = t1;
+        }
+
     }
 }
