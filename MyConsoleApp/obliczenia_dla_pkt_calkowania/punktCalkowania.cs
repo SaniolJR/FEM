@@ -14,8 +14,10 @@ namespace Obliczenia_dla_pkt_calkowania
         public List<double> dN_dKsi { get; private set; }
         public List<double> dN_dEta { get; private set; }
         public double[,] Hpc { get; private set; }
+        public double[,] Cpc { get; private set; }
 
-        public PktCalkowania(double k, List<double> dN_dKsi, List<double> dN_dEta, Node[] wezlyElementu, double w1, double w2)
+        public PktCalkowania(double k, List<double> dN_dKsi, List<double> dN_dEta,
+                             Node[] wezlyElementu, double w1, double w2, double ksi, double eta)
         {
             this.dN_dKsi = dN_dKsi;
             this.dN_dEta = dN_dEta;
@@ -47,6 +49,9 @@ namespace Obliczenia_dla_pkt_calkowania
                     Hpc[i, j] = k * (dNdx_H[i, j] + dNdy_H[i, j]) * DetJ;
                 }
             }
+
+            //obliczanie macierzy Cpc
+            //TODO: punkt całkowania musi znac swoje ksi i eta
         }
 
         private double[,] WxWT(double[] pkt_calk)

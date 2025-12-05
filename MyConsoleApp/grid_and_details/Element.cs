@@ -76,12 +76,14 @@ namespace GridAndDetailsNamespace
 
             this.punktyCalkowania = new List<PktCalkowania>();
 
-            List<(double w1, double w2)> wagi = wagiPunktowTab(kwadratura_gaussa);
+            List<(double ksi, double eta, double w1, double w2)> wagiIWezly = wagiIWezlyPunktowTab(kwadratura_gaussa);
 
             //dN_dKsi.Count jest bezpieczniejsze raczej niż N z pochodne_WspLokalne bo to faktyczna długosc używanej tablicy
             for (int i = 0; i < dN_dKSi.Count; i++)
             {
-                punktyCalkowania.Add(new PktCalkowania(K, dN_dKSi[i], dN_dEta[i], nodes, wagi[i].w1, wagi[i].w2));
+                punktyCalkowania.Add(new PktCalkowania(K, dN_dKSi[i], dN_dEta[i],
+                                        nodes, wagiIWezly[i].w1, wagiIWezly[i].w2,
+                                        wagiIWezly[i].ksi, wagiIWezly[i].eta));
             }
 
             this.H = obliczH(kwadratura_gaussa);
@@ -141,15 +143,17 @@ namespace GridAndDetailsNamespace
             return res;
         }
         //funkcja zwracająca tablice wag, gdzie wagi na index i będzia odpowaidac punkowi i w tabelach pochodnych
-        private List<(double, double)> wagiPunktowTab(schemat_calk kwadratura_gaussa)
+        private List<(double, double, double, double)> wagiIWezlyPunktowTab(schemat_calk kwadratura_gaussa)
         {
-            var wagi = new List<(double waga_ksi, double waga_eta)>();
+            var wagi = new List<(double ksi, double eta, double waga_ksi, double waga_eta)>();
             //kolejnosc jak przy punktach calkowania w pochodnych lokalnych
-            foreach (var row in kwadratura_gaussa.Wspolczynniki2D)
+            for (int i = 0; i < kwadratura_gaussa.Wspolczynniki2D.Count; i++)
             {
-                foreach (var waga in row)
+                for (int j = 0; j < kwadratura_gaussa.Wspolczynniki2D[i].Count; j++)
                 {
-                    wagi.Add((waga.x, waga.y));
+                    var waga = kwadratura_gaussa.Wspolczynniki2D[i][j];
+                    var wezel = kwadratura_gaussa.Wezly2D[i][j];
+                    wagi.Add((wezel.x, wezel.y, waga.x, waga.y));
                 }
             }
 
